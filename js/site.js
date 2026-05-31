@@ -11,6 +11,7 @@
     { href: 'gallery.html',     label: '/ gallery /'    },
     { href: 'players.html',     label: '/ players /'    },
     { href: 'contact.html',     label: '/ contact /'    },
+    { href: 'apply.html',       label: '[ APPLY ]'      },
   ];
 
   function buildHeader() {
