@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>babanepedia - Players</title>
+  <link rel="stylesheet" href="css/yotsuba.css">
+</head>
+<body>
+
+<div id="header"></div>
+<div id="nav"></div>
+
+<div id="wrap">
+
+  <div class="boardtitle">Players &amp; Leaderboard <span>— hall of fame</span></div>
+
+  <div class="board">
+    <div class="op-post">
+      <div class="post-info">
+        <span class="post-name">Admin</span>
+        <span class="post-date">&nbsp;## Season 3 Stats ##</span>
+      </div>
+      <div class="post-body">
+        <p>Updated manually by staff. Last updated: <strong>see Discord for latest</strong>.</p>
+        <p class="greentext">&gt;playtime measured in hours<br>&gt;kills = legit pvp arena kills only<br>&gt;blocks = placed this season</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="board-sep">
+
+  <!-- ── MOST PLAYTIME ── -->
+  <div class="boardtitle">Most Playtime <span>— top 10</span></div>
+  <table class="lb-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Playtime (hrs)</th>
+        <th>Joined</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+    <tbody id="lb-playtime">
+      <!--
+        HOW TO UPDATE THIS TABLE:
+        Edit the rows below. Copy a <tr> block and fill in the data.
+        rank-1 / rank-2 / rank-3 classes give gold/silver/bronze colours.
+      -->
+      <tr class="rank-1">
+        <td class="rank-badge">🥇 1</td>
+        <td><strong>PlayerName1</strong></td>
+        <td>842h</td>
+        <td>Season 1</td>
+        <td><span class="tag">VIP</span></td>
+      </tr>
+      <tr class="rank-2">
+        <td class="rank-badge">🥈 2</td>
+        <td>PlayerName2</td>
+        <td>731h</td>
+        <td>Season 2</td>
+        <td><span class="tag">Member</span></td>
+      </tr>
+      <tr class="rank-3">
+        <td class="rank-badge">🥉 3</td>
+        <td>PlayerName3</td>
+        <td>618h</td>
+        <td>Season 1</td>
+        <td><span class="tag">VIP</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>PlayerName4</td>
+        <td>502h</td>
+        <td>Season 2</td>
+        <td><span class="tag">Member</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>PlayerName5</td>
+        <td>477h</td>
+        <td>Season 3</td>
+        <td><span class="tag">Member</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>PlayerName6</td>
+        <td>390h</td>
+        <td>Season 2</td>
+        <td><span class="tag">Member</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>PlayerName7</td>
+        <td>321h</td>
+        <td>Season 3</td>
+        <td><span class="tag">Member</span></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>PlayerName8</td>
+        <td>289h</td>
+        <td>Season 3</td>
+        <td><span class="tag">Member</span></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>PlayerName9</td>
+        <td>240h</td>
+        <td>Season 3</td>
+        <td><span class="tag">Member</span></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>PlayerName10</td>
+        <td>199h</td>
+        <td>Season 3</td>
+        <td><span class="tag">Member</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="board-sep">
+
+  <!-- ── PVP KILLS ── -->
+  <div class="boardtitle">Top PvP Kills <span>— arena only</span></div>
+  <table class="lb-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>K/D</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="rank-1">
+        <td class="rank-badge">🥇 1</td>
+        <td><strong>PlayerName1</strong></td>
+        <td>312</td>
+        <td>88</td>
+        <td>3.5</td>
+      </tr>
+      <tr class="rank-2">
+        <td class="rank-badge">🥈 2</td>
+        <td>PlayerName3</td>
+        <td>271</td>
+        <td>102</td>
+        <td>2.7</td>
+      </tr>
+      <tr class="rank-3">
+        <td class="rank-badge">🥉 3</td>
+        <td>PlayerName5</td>
+        <td>198</td>
+        <td>155</td>
+        <td>1.3</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>PlayerName8</td>
+        <td>144</td>
+        <td>200</td>
+        <td>0.7</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>PlayerName2</td>
+        <td>122</td>
+        <td>67</td>
+        <td>1.8</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="board-sep">
+
+  <div class="board">
+    <div class="reply-box">
+      <div class="post-info">
+        <span class="post-name">Admin</span>
+      </div>
+      <div class="post-body">
+        <p>Stats are updated manually every Sunday. For live stats, join the <a href="contact.html">Discord</a> and use the <code>/stats</code> bot command in-game.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<div id="footer"></div>
+<script src="js/site.js"></script>
+</body>
+</html>

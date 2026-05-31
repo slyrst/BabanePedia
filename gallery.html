@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>babanepedia - Gallery</title>
+  <link rel="stylesheet" href="css/yotsuba.css">
+</head>
+<body>
+
+<div id="header"></div>
+<div id="nav"></div>
+
+<div id="wrap">
+
+  <div class="boardtitle">Gallery <span>— community screenshots</span></div>
+
+  <div class="board">
+    <div class="op-post">
+      <div class="post-info">
+        <span class="post-name">Admin</span>
+        <span class="post-date">&nbsp;## Gallery Rules ##</span>
+      </div>
+      <div class="post-body">
+        <p>Community screenshots from babanepedia. To submit your screenshot, post it in <strong>#gallery</strong> on Discord.</p>
+        <p class="greentext">&gt;no shaders required, vanilla is fine<br>&gt;no griefed bases please<br>&gt;keep it sfw</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="board-sep">
+
+  <!--
+    HOW TO ADD IMAGES:
+    1. Put your .png / .jpg files inside the  images/  folder
+    2. Copy a .gallery-item block below and change:
+       - src="images/YOUR-FILE.png"
+       - alt and the caption text
+    3. That's it. Push to GitHub.
+  -->
+
+  <div class="gallery-grid" id="gallery-grid">
+
+    <div class="gallery-item">
+      <img src="images/screenshot1.png" alt="Screenshot 1" onerror="this.parentElement.style.display='none'">
+      <div class="gal-caption">spawn area — season 3</div>
+    </div>
+
+    <div class="gallery-item">
+      <img src="images/screenshot2.png" alt="Screenshot 2" onerror="this.parentElement.style.display='none'">
+      <div class="gal-caption">community farm</div>
+    </div>
+
+    <div class="gallery-item">
+      <img src="images/screenshot3.png" alt="Screenshot 3" onerror="this.parentElement.style.display='none'">
+      <div class="gal-caption">the nether highway</div>
+    </div>
+
+    <div class="gallery-item">
+      <img src="images/screenshot4.png" alt="Screenshot 4" onerror="this.parentElement.style.display='none'">
+      <div class="gal-caption">pvp arena</div>
+    </div>
+
+    <div class="gallery-item">
+      <img src="images/screenshot5.png" alt="Screenshot 5" onerror="this.parentElement.style.display='none'">
+      <div class="gal-caption">base of the week</div>
+    </div>
+
+    <div class="gallery-item">
+      <img src="images/screenshot6.png" alt="Screenshot 6" onerror="this.parentElement.style.display='none'">
+      <div class="gal-caption">end island cleared</div>
+    </div>
+
+  </div>
+
+  <hr class="board-sep">
+
+  <div class="board">
+    <div class="reply-box">
+      <div class="post-info">
+        <span class="post-name">Moderator</span>
+      </div>
+      <div class="post-body">
+        <p>Want your screenshot here? Share it in <strong>#gallery</strong> on our <a href="contact.html">Discord</a> and staff will add it.</p>
+        <p><em>Resolution tip: F2 for screenshot, or use Nvidia/AMD screenshot tool for higher res.</em></p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<div id="footer"></div>
+<script src="js/site.js"></script>
+</body>
+</html>
