@@ -25,7 +25,7 @@
     document.getElementById('ip-btn').addEventListener('click', function () {
       navigator.clipboard.writeText('play.babanepedia.com').then(() => {
         this.textContent = 'copied!';
-        setTimeout(() => { this.textContent = 'play.babanepedia.com'; }, 1500);
+        setTimeout(() => { this.textContent = 'babanepedia.com'; }, 1500);
       });
     });
   }
