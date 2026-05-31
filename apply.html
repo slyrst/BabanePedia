@@ -6,21 +6,134 @@
   <title>babanepedia - Apply</title>
   <link rel="stylesheet" href="css/yotsuba.css">
   <style>
-    .apply-embed {
-      width: 100%;
-      min-height: 900px;
+    /* ── checker UI ── */
+    #checker-wrap {
+      background: var(--bg);
       border: 1px solid var(--border);
-      background: #fff;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    #checker-wrap label {
       display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-size: 13px;
     }
-    .req-box {
-      background: #fff0f0;
-      border: 1px solid #e08080;
-      padding: 8px 12px;
+    #checker-wrap .input-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    #discord-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-family: monospace;
+      background: var(--bg);
+      color: var(--text);
+    }
+    #discord-input:focus {
+      outline: 2px solid var(--accent2);
+    }
+    #check-btn {
+      padding: 5px 16px;
+      background: var(--accent2);
+      color: #fff;
+      border: 1px solid #222244;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #check-btn:hover { background: var(--accent); }
+
+    /* ── result states ── */
+    #result { margin-top: 12px; display: none; }
+
+    /* ACCEPTED */
+    .cert-box {
+      background: #f0fff0;
+      border: 2px solid #228822;
+      padding: 14px 18px;
+    }
+    .cert-box .cert-header {
+      font-size: 18px;
+      font-weight: bold;
+      color: #116611;
       margin-bottom: 8px;
-      font-size: 12px;
+      letter-spacing: 1px;
     }
-    .req-box strong { color: var(--accent); }
+    .cert-box .cert-body {
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .cert-box .cert-username {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent2);
+      font-family: monospace;
+      display: block;
+      margin: 8px 0;
+    }
+    .cert-box .cert-stamp {
+      display: inline-block;
+      border: 3px solid #228822;
+      color: #228822;
+      font-size: 22px;
+      font-weight: bold;
+      padding: 4px 14px;
+      margin-top: 10px;
+      letter-spacing: 3px;
+      transform: rotate(-3deg);
+      font-family: monospace;
+    }
+    .cert-box table {
+      border-collapse: collapse;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .cert-box table th {
+      background: #d0f0d0;
+      padding: 4px 10px;
+      text-align: left;
+      border: 1px solid #aaddaa;
+      font-size: 12px;
+      width: 140px;
+    }
+    .cert-box table td {
+      padding: 4px 10px;
+      border: 1px solid #aaddaa;
+      font-size: 12px;
+      font-family: monospace;
+    }
+
+    /* DENIED */
+    .deny-box {
+      background: #fff0f0;
+      border: 2px solid #cc2222;
+      padding: 14px 18px;
+    }
+    .deny-box .deny-header {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .deny-box .deny-stamp {
+      display: inline-block;
+      border: 3px solid #cc2222;
+      color: #cc2222;
+      font-size: 22px;
+      font-weight: bold;
+      padding: 4px 14px;
+      margin-top: 8px;
+      letter-spacing: 3px;
+      font-family: monospace;
+      transform: rotate(-3deg);
+    }
+
+    /* step list */
     .step-list {
       list-style: none;
       background: var(--bg);
@@ -42,6 +155,23 @@
       padding: 1px 6px;
       margin-right: 8px;
     }
+    .req-box {
+      background: #fff0f0;
+      border: 1px solid #e08080;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .req-box strong { color: var(--accent); }
+
+    /* apply section */
+    .apply-embed {
+      width: 100%;
+      min-height: 860px;
+      border: 1px solid var(--border);
+      background: #fff;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -60,16 +190,37 @@
         <span class="post-date">&nbsp;## Applications ##</span>
       </div>
       <div class="post-body">
-        <p>Want to join babanepedia SMP? Fill out the form below. We review applications manually.</p>
-        <p class="greentext">&gt;applications are reviewed within 48 hours<br>&gt;you MUST join Discord first<br>&gt;Java Edition only, no Bedrock<br>&gt;be honest, we check usernames</p>
+        <p>Fill out the application form below. Once reviewed and accepted, your Discord username will appear in the <strong>whitelist checker</strong> above the form.</p>
+        <p class="greentext">&gt;you MUST join Discord first<br>&gt;Java Edition only<br>&gt;applications reviewed within 48h<br>&gt;once accepted, check your username below</p>
       </div>
     </div>
   </div>
 
   <hr class="board-sep">
 
-  <!-- Requirements -->
-  <div class="boardtitle">Requirements <span>— read before applying</span></div>
+  <!-- ── WHITELIST CHECKER ── -->
+  <div class="boardtitle">Whitelist Checker <span>— are you accepted?</span></div>
+
+  <div id="checker-wrap">
+    <label for="discord-input">Enter your Discord username:</label>
+    <div class="input-row">
+      <input
+        type="text"
+        id="discord-input"
+        placeholder="e.g. coolplayer123"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button id="check-btn" onclick="checkUser()">Check →</button>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <hr class="board-sep">
+
+  <!-- ── HOW TO APPLY ── -->
+  <div class="boardtitle">How to Apply <span>— steps</span></div>
 
   <div class="req-box">
     <strong>⚠ You MUST join our Discord server before applying.</strong>
@@ -80,14 +231,14 @@
   <ol class="step-list">
     <li><span class="step-num">1</span> Join our <a href="contact.html">Discord server</a>.</li>
     <li><span class="step-num">2</span> Own a legitimate copy of <strong>Minecraft Java Edition</strong>.</li>
-    <li><span class="step-num">3</span> Fill out the form below honestly.</li>
-    <li><span class="step-num">4</span> Wait up to 48 hours. You'll get a DM on Discord if accepted.</li>
-    <li><span class="step-num">5</span> If accepted, you'll be whitelisted and given the server IP.</li>
+    <li><span class="step-num">3</span> Fill out the application form below honestly.</li>
+    <li><span class="step-num">4</span> Wait up to 48 hours. Check back here with your Discord username to see if you're accepted.</li>
+    <li><span class="step-num">5</span> If accepted, you'll get the server IP in Discord DMs and be whitelisted.</li>
   </ol>
 
   <hr class="board-sep">
 
-  <!-- Embedded Google Form -->
+  <!-- ── APPLICATION FORM ── -->
   <div class="boardtitle">Application Form</div>
 
   <iframe
@@ -99,16 +250,11 @@
     title="Babanepedia SMP Application Form"
   >Loading form...</iframe>
 
-  <hr class="board-sep">
-
-  <div class="board">
+  <div class="board" style="margin-top:8px;">
     <div class="reply-box">
-      <div class="post-info">
-        <span class="post-name">Admin</span>
-      </div>
+      <div class="post-info"><span class="post-name">Admin</span></div>
       <div class="post-body">
-        <p>Application not loading? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfoZAvbxmaHEGiM5I-psIF_wB3JJFiBCVtnkv12fu1linbc8g/viewform" target="_blank" rel="noopener">Open it directly →</a></p>
-        <p>Questions? Ask in <a href="contact.html">#applications</a> on Discord.</p>
+        <p>Form not loading? <a href="https://docs.google.com/forms/d/e/1FAIpQLSfoZAvbxmaHEGiM5I-psIF_wB3JJFiBCVtnkv12fu1linbc8g/viewform" target="_blank" rel="noopener">Open it directly →</a></p>
       </div>
     </div>
   </div>
@@ -117,5 +263,87 @@
 
 <div id="footer"></div>
 <script src="js/site.js"></script>
+<script>
+  /*
+  ============================================================
+    WHITELIST — add / remove Discord usernames here
+    lowercase only, the check is case-insensitive
+  ============================================================
+  */
+  const WHITELIST = {
+    // "discord_username": { mc: "MinecraftIGN", joined: "Season 3", role: "Member" },
+
+    // ── EXAMPLES (delete these and add real ones) ──
+    "coolplayer123":  { mc: "CoolPlayer123",  joined: "Season 3", role: "Member"  },
+    "notchfan99":     { mc: "NotchFan99",      joined: "Season 3", role: "Member"  },
+    "endermanslayer": { mc: "EnderSlayer",     joined: "Season 3", role: "Member"  },
+    "buildmaster_tr": { mc: "BuildMasterTR",   joined: "Season 3", role: "Builder" },
+    "pvpking2025":    { mc: "PvPKing2025",      joined: "Season 3", role: "Member"  },
+  };
+
+  function checkUser() {
+    const raw   = document.getElementById("discord-input").value.trim();
+    const lower = raw.toLowerCase();
+    const box   = document.getElementById("result");
+    box.style.display = "block";
+
+    if (!raw) {
+      box.innerHTML = `<div class="deny-box"><div class="deny-header">Please enter a Discord username.</div></div>`;
+      return;
+    }
+
+    const data = WHITELIST[lower];
+
+    if (data) {
+      box.innerHTML = `
+        <div class="cert-box">
+          <div class="cert-header">🎉 CONGRATULATIONS!</div>
+          <div class="cert-body">
+            <p>This certificate confirms that</p>
+            <span class="cert-username">${escHtml(raw)}</span>
+            <p>has been <strong>accepted</strong> into <strong>babanepedia SMP</strong>.</p>
+            <table>
+              <tr><th>Discord</th><td>${escHtml(raw)}</td></tr>
+              <tr><th>Minecraft IGN</th><td>${escHtml(data.mc)}</td></tr>
+              <tr><th>Season</th><td>${escHtml(data.joined)}</td></tr>
+              <tr><th>Role</th><td>${escHtml(data.role)}</td></tr>
+              <tr><th>Status</th><td>✅ Whitelisted</td></tr>
+            </table>
+            <p style="margin-top:10px;font-size:12px;">
+              Check your Discord DMs for the server IP.<br>
+              Welcome to the server — don't grief or you're banned. 👋
+            </p>
+            <div class="cert-stamp">ACCEPTED</div>
+          </div>
+        </div>
+      `;
+    } else {
+      box.innerHTML = `
+        <div class="deny-box">
+          <div class="deny-header">❌ Not on the whitelist (yet)</div>
+          <p style="font-size:13px;margin-top:6px;">
+            <strong>${escHtml(raw)}</strong> is not on the whitelist at this time.
+          </p>
+          <p style="font-size:12px;color:var(--muted);margin-top:6px;">
+            If you haven't applied yet, fill out the form below.<br>
+            Already applied? Applications are reviewed within 48 hours — check back later.<br>
+            Make sure you typed your Discord username correctly (case-insensitive).
+          </p>
+          <div class="deny-stamp">NOT YET</div>
+        </div>
+      `;
+    }
+  }
+
+  /* allow pressing Enter in the input */
+  document.getElementById("discord-input")
+    .addEventListener("keydown", function(e) {
+      if (e.key === "Enter") checkUser();
+    });
+
+  function escHtml(str) {
+    return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+</script>
 </body>
 </html>
