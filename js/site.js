@@ -20,7 +20,7 @@
     h.innerHTML = `
       <a href="index.html" class="site-title">babanepedia</a>
       <span class="site-sub">the greatest minecraft server</span>
-      <span class="server-ip" title="click to copy" id="ip-btn">play.babanepedia.com</span>
+      <span class="server-ip" title="click to copy" id="ip-btn">babanepedia.com</span>
     `;
     document.getElementById('ip-btn').addEventListener('click', function () {
       navigator.clipboard.writeText('play.babanepedia.com').then(() => {
