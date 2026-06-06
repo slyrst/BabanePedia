@@ -1,109 +1,1866 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>babanepedia - Minecraft Server</title>
-  <link rel="stylesheet" href="css/yotsuba.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Babane Pedia</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:arial,helvetica,sans-serif;font-size:10pt;background:#ffe;color:#800000;padding-top:28px;padding-bottom:80px;}
+a,a:visited{color:#0000ff;text-decoration:underline;}
+a:hover{color:#d00;}
+h1{font-family:tahoma;letter-spacing:-2px;font-size:20pt;text-align:center;color:#800000;}
+h2{font-size:11pt;}
+hr{border:none;border-top:1px solid #d9bfb7;height:0;clear:left;}
+#topnav{position:fixed;top:0;left:0;right:0;z-index:9999;background:#e8722a;border-bottom:1px solid #c45a18;padding:2px 6px;font-size:9pt;white-space:nowrap;overflow-x:auto;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+#topnav::-webkit-scrollbar{height:0;}
+#topnav a{color:#fff5ee!important;text-decoration:none;}
+#topnav a:hover{color:#fff!important;text-decoration:underline;}
+#topnav .sep{color:#f5b98a;margin:0 2px;}
+#topnav strong{color:#fff;font-size:10pt;cursor:pointer;display:flex;align-items:center;gap:5px;}
+#topnav-right{margin-left:auto;display:flex;gap:6px;align-items:center;flex-shrink:0;}
+#site-logo{width:18px;height:18px;object-fit:contain;vertical-align:middle;}
+.wiki-tb{position:-webkit-sticky;position:sticky;top:28px;z-index:999;background:#f0e0d6;border:1px solid #d9bfb7;padding:4px;display:flex;flex-wrap:nowrap;overflow-x:auto;box-shadow:0 2px 5px rgba(0,0,0,0.15);}
+.ed-bar{position:fixed;bottom:0;left:0;right:0;background:#f0e0d6;border-top:2px solid #d9bfb7;padding:10px 15px;display:flex;gap:10px;justify-content:center;z-index:1000;}
+#search-wrap{display:flex;border:1px solid rgba(255,255,255,.3);border-radius:2px;overflow:visible;background:rgba(255,255,255,.12);position:relative;}
+#search-wrap input{background:transparent;border:none;outline:none;padding:2px 7px;color:#fff;font-size:9pt;width:140px;}
+#search-wrap input::placeholder{color:rgba(255,255,255,.6);}
+#search-wrap button{background:transparent;border:none;border-left:1px solid rgba(255,255,255,.2);padding:2px 7px;cursor:pointer;color:#fff5ee;font-size:11px;}
+.search-ac-drop{position:absolute;top:calc(100% + 3px);left:0;min-width:220px;background:#fff;border:1px solid #d9bfb7;z-index:99999;max-height:220px;overflow-y:auto;box-shadow:0 4px 16px rgba(0,0,0,.22);border-radius:2px;}
+.search-ac-item{padding:5px 10px;cursor:pointer;font-size:9pt;color:#800000;border-bottom:1px solid #f0e0d6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.search-ac-item:hover,.search-ac-item.hovered{background:#f0e0d6;color:#d00;}
+.search-ac-item:last-child{border-bottom:none;}
+.sb-search-rel{position:relative;}
+#user-pill{font-size:9pt;cursor:pointer;color:#fff5ee!important;text-decoration:none;}
+#user-pill:hover{color:#fff!important;}
+#user-pill.admin-pill{color:#ffe278!important;font-weight:bold;}
+#user-pill.proko-pill{color:#d0aaff!important;font-weight:bold;}
+#hamburger{background:none;border:none;cursor:pointer;color:#fff5ee;font-size:16px;padding:0 4px;display:none;}
+#layout{display:flex;gap:16px;max-width:98vw;width:100%;margin:0 auto;padding:10px 12px 60px;}
+#sidebar{width:200px;flex-shrink:0;}
+#main-content{flex:1;min-width:0;}
+.sbox{background:#f0e0d6;border:1px solid #d9bfb7;margin-bottom:8px;font-size:9pt;}
+.sbox-head{background:#ea8;border-bottom:1px solid #d9bfb7;padding:2px 6px;font-weight:bold;font-size:9pt;color:#800;}
+.sbox ul{list-style:none;padding:3px 0;}
+.sbox ul li a{display:block;padding:2px 8px;color:#0000ff;text-decoration:none;font-size:9pt;}
+.sbox ul li a:hover{text-decoration:underline;color:#d00;}
+.sbox .sc{padding:4px 8px;color:#800;font-size:9pt;font-style:italic;}
+.pending-badge{background:#d00;color:#fff;border-radius:8px;padding:0 5px;font-size:9px;margin-left:3px;}
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:850;}
+#sb-overlay.on{display:block;}
+#sidebar.mob-open{transform:translateX(0)!important;}
+.page-wrap{margin-bottom:12px;}
+.page-head{background:#ea8;border:1px solid #800;padding:3px 8px;display:flex;align-items:center;flex-wrap:wrap;gap:5px;}
+.ph-tabs{display:flex;gap:3px;flex-wrap:wrap;}
+.ph-tab{padding:2px 9px;font-size:9pt;border:1px solid #d9bfb7;background:#f0e0d6;cursor:pointer;color:#800000;text-decoration:none;}
+.ph-tab.active{background:#fff;font-weight:bold;}
+.ph-tab:hover:not(.active){background:#ffe0cc;}
+.ph-actions{margin-left:auto;font-size:9pt;display:flex;gap:8px;align-items:center;}
+.ph-actions a{color:#0000ff;cursor:pointer;text-decoration:none;}
+.ph-actions a:hover{text-decoration:underline;color:#d00;}
+.ph-actions a.red{color:#d00;}
+.page-body{background:#fff9f0;border:1px solid #d9bfb7;border-top:none;padding:12px 14px;}
+.art-title{font-size:14pt;font-weight:bold;color:#d00;margin-bottom:4px;font-family:tahoma,arial,sans-serif;}
+.art-meta{font-size:9pt;color:#117743;margin-bottom:10px;}
+.art-meta span{margin-right:8px;}
+.acard{border-bottom:1px solid #e8d0c0;padding:8px 0;}
+.acard:last-child{border-bottom:none;}
+.acard-title{font-size:12pt;font-weight:bold;}
+.acard-title a{color:#d00;text-decoration:none;}
+.acard-title a:hover{text-decoration:underline;}
+.acard-meta{font-size:9pt;color:#117743;margin-top:1px;}
+.empty-state{text-align:center;padding:40px;color:#800;font-style:italic;}
+.viewer-canvas{position:relative;background:#fffef0;min-height:300px;overflow:auto;border:1px solid #e8d8c8;}
+.view-block{position:absolute;overflow:visible;font-size:10pt;line-height:1.6;color:#800000;}
+.view-block img{max-width:100%;height:100%;display:block;object-fit:contain;}
+.tpl-render{margin:4px 0;}
+.notice{border-left:3px solid #0000ff;background:#eef4ff;padding:6px 10px;margin-bottom:8px;font-size:9pt;color:#000080;}
+.notice.warn{border-color:#e8a000;background:#fff8e0;color:#7a4a00;}
+.notice.success{border-color:#117743;background:#eafaf0;color:#0a4427;}
+.notice.proko{border-color:#a0d;background:#f8eeff;color:#600080;}
+.editor-wrap{padding:0;}
+.ed-title{font-family:tahoma,arial,sans-serif;font-size:16pt;font-weight:bold;width:100%;border:none;border-bottom:2px solid #d9bfb7;padding:3px 0;outline:none;background:transparent;color:#d00;margin-bottom:8px;}
+.ed-title::placeholder{color:#dba;}
+.ed-title:focus{border-bottom-color:#e87020;}
+.ed-loc{font-size:9pt;border:1px solid #a9a9a9;padding:3px 7px;outline:none;width:220px;background:#fff;color:#800000;}
+.ed-loc:focus{border-color:#e87020;}
+.tbg{display:flex;gap:1px;border-right:1px solid #c8b8b0;padding-right:3px;margin-right:2px;flex-shrink:0;}
+.tbg:last-child{border-right:none;}
+.tb{padding:4px 8px;font-size:10pt;border:1px solid transparent;background:transparent;cursor:pointer;color:#800000;white-space:nowrap;min-width:22px;text-align:center;}
+.tb:hover{background:#e8d0c0;border-color:#c8a890;}
+.tb:active{background:#d8b8a0;}
+select.tb-sel{padding:1px 4px;font-size:9pt;border:1px solid #a9a9a9;background:#fff;cursor:pointer;color:#800000;max-width:90px;}
+.tb-cl{display:flex;align-items:center;gap:2px;font-size:9px;color:#800;}
+input.tb-color{width:24px;height:20px;border:1px solid #a9a9a9;padding:0;cursor:pointer;}
+.ed-canvas{border:1px solid #d9bfb7;min-height:480px;position:relative;background:linear-gradient(rgba(200,120,60,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,120,60,.04) 1px,transparent 1px),#fffef5;background-size:28px 28px;overflow:auto;cursor:default;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;}
+.ed-canvas-inner{position:relative;min-width:800px;min-height:480px;}
+.ed-canvas-hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c8a090;font-size:10pt;font-style:italic;pointer-events:none;user-select:none;gap:6px;}
+.e-block{position:absolute;border:1px dashed transparent;cursor:move;min-width:60px;min-height:24px;}
+.e-block:hover{border-color:#e87020!important;}
+.e-block.selected{border:1px solid #e87020!important;box-shadow:0 0 0 2px rgba(232,114,42,.2);}
+.e-block-inner{width:100%;height:100%;outline:none;font-family:arial,helvetica,sans-serif;font-size:10pt;line-height:1.6;color:#800000;overflow:auto;padding:4px 6px;word-break:break-word;}
+.e-block-inner:focus{cursor:text;}
+.e-block img{max-width:100%;height:100%;display:block;pointer-events:none;object-fit:contain;}
+.rh{width:8px;height:8px;background:#e87020;border:1px solid #fff;position:absolute;border-radius:1px;z-index:10;}
+.rh-se{right:-4px;bottom:-4px;cursor:se-resize;}.rh-sw{left:-4px;bottom:-4px;cursor:sw-resize;}
+.rh-ne{right:-4px;top:-4px;cursor:ne-resize;}.rh-nw{left:-4px;top:-4px;cursor:nw-resize;}
+.rh-n{left:50%;top:-4px;transform:translateX(-50%);cursor:n-resize;}
+.rh-s{left:50%;bottom:-4px;transform:translateX(-50%);cursor:s-resize;}
+.rh-e{right:-4px;top:50%;transform:translateY(-50%);cursor:e-resize;}
+.rh-w{left:-4px;top:50%;transform:translateY(-50%);cursor:w-resize;}
+.block-del{position:absolute;top:-9px;right:-9px;width:16px;height:16px;background:#d00;color:#fff;border:1px solid #fff;border-radius:50%;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center;z-index:20;}
+.block-del:hover{background:#a00;}
+.btn-post{padding:5px 15px;background:#98e;border:1px solid #7799cc;color:#000;font-weight:bold;cursor:pointer;font-size:10pt;}
+.btn-post:hover{background:#aaf;border-color:#6688bb;}
+.btn-cancel{padding:5px 12px;background:#f0e0d6;border:1px solid #d9bfb7;cursor:pointer;font-size:10pt;color:#800;}
+.btn-cancel:hover{background:#e8d0c0;}
+.img-up-wrap{border:2px dashed #d9bfb7;padding:16px 10px;text-align:center;cursor:pointer;background:#fffef0;font-size:9pt;color:#800;}
+.img-up-wrap:hover,.img-up-wrap.dragover{border-color:#e87020;background:#fff5ea;}
+.img-up-wrap input[type=file]{display:none;}
+.upload-prev{display:none;gap:8px;align-items:center;padding:6px;background:#f0e0d6;border:1px solid #d9bfb7;margin-top:8px;}
+.upload-prev.on{display:flex;}
+.upload-prev img{max-width:56px;max-height:56px;object-fit:contain;border:1px solid #d9bfb7;background:#fff;}
+.up-meta{flex:1;font-size:9pt;color:#800000;}
+.up-name{font-weight:bold;word-break:break-all;}
+.up-size{color:#888;font-size:8pt;}
+.up-warn{color:#d00;font-size:8pt;display:none;}
+.upload-clear{background:none;border:none;cursor:pointer;font-size:16px;color:#d00;padding:0 4px;}
+#emoji-picker{position:fixed;z-index:800;background:#fff;border:1px solid #d9bfb7;box-shadow:0 4px 16px rgba(0,0,0,.18);padding:6px;display:none;width:280px;}
+#emoji-picker input{width:100%;border:1px solid #a9a9a9;padding:3px 7px;font-size:9pt;margin-bottom:5px;outline:none;}
+#emoji-grid{display:flex;flex-wrap:wrap;gap:1px;max-height:160px;overflow-y:auto;}
+#emoji-grid span{font-size:20px;cursor:pointer;padding:2px;line-height:1;display:inline-block;}
+#emoji-grid span:hover{background:#f0e0d6;}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;display:flex;align-items:center;justify-content:center;}
+.modal-box{background:#fff9f0;border:2px solid #d9bfb7;width:520px;max-width:96vw;box-shadow:0 6px 30px rgba(0,0,0,.3);max-height:90vh;display:flex;flex-direction:column;}
+.modal-head{background:#ea8;border-bottom:1px solid #d9bfb7;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:10pt;color:#800;}
+.modal-close{background:none;border:none;cursor:pointer;font-size:16px;color:#800;padding:0 2px;font-weight:bold;}
+.modal-close:hover{color:#d00;}
+.modal-body{padding:12px;overflow-y:auto;flex:1;}
+.modal-body label{display:block;font-weight:bold;margin-bottom:3px;font-size:9pt;color:#800000;}
+.modal-body input,.modal-body textarea,.modal-body select{width:100%;border:1px solid #a9a9a9;padding:5px 8px;font-size:10pt;font-family:arial,sans-serif;outline:none;margin-bottom:10px;background:#fff;color:#000;max-width:100%;}
+.modal-body input:focus,.modal-body textarea:focus{border-color:#e87020;}
+.modal-foot{background:#f0e0d6;border-top:1px solid #d9bfb7;padding:7px 12px;display:flex;gap:6px;justify-content:flex-end;}
+.modal-foot button{padding:3px 14px;font-size:10pt;cursor:pointer;}
+#modal-ok{background:#98e;border:1px solid #7799cc;color:#000;font-weight:bold;}
+#modal-ok:hover{background:#aaf;}
+#modal-cancel{background:#f0e0d6;border:1px solid #d9bfb7;color:#800000;}
+.modal-err{color:#d00;font-size:9pt;margin:-5px 0 8px;}
+.auth-tabs{display:flex;margin-bottom:10px;}
+.auth-tab{flex:1;padding:5px;border:1px solid #d9bfb7;background:#f0e0d6;color:#800;cursor:pointer;font-size:10pt;text-align:center;}
+.auth-tab.on{background:#98e;border-color:#7799cc;color:#000;font-weight:bold;}
+.auth-tab:not(.on):hover{background:#e8d0c0;}
+.auth-inp{width:100%;border:1px solid #a9a9a9;padding:6px 9px;font-size:10pt;font-family:arial;outline:none;margin-bottom:8px;display:block;background:#fff;color:#000;max-width:100%;}
+.auth-inp:focus{border-color:#e87020;}
+.auth-sub{width:100%;padding:6px;background:#98e;border:1px solid #7799cc;cursor:pointer;font-size:11pt;font-weight:bold;margin-bottom:8px;}
+.auth-sub:hover{background:#aaf;}
+.pend-card{border:1px solid #d9bfb7;background:#f0e0d6;padding:8px 12px;margin-bottom:8px;}
+.pend-card h4{font-size:11pt;font-weight:bold;color:#d00;margin-bottom:3px;}
+.pend-card .pm{font-size:9pt;color:#117743;margin-bottom:6px;}
+.pend-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.btn-approve{padding:2px 10px;background:#4a7d44;color:#fff;border:none;cursor:pointer;font-size:9pt;}
+.btn-approve:hover{background:#3a6234;}
+.btn-reject{padding:2px 10px;background:#d00;color:#fff;border:none;cursor:pointer;font-size:9pt;}
+.btn-reject:hover{background:#a00;}
+.tpl-card{border:1px solid #d9bfb7;background:#f0e0d6;padding:8px 12px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;}
+.tpl-card h4{font-size:10pt;font-weight:bold;color:#d00;margin-bottom:2px;}
+.tpl-desc{font-size:9pt;color:#800;}
+.tpl-acts{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+.btn-tpl{padding:2px 8px;font-size:9pt;cursor:pointer;border:1px solid #d9bfb7;background:#f0e0d6;color:#800000;}
+.btn-tpl:hover{background:#e8d0c0;}
+.btn-tpl.ins{background:#98e;border-color:#7799cc;color:#000;font-weight:bold;}
+.btn-tpl.ins:hover{background:#aaf;}
+.btn-tpl.del{background:#fff0f0;border-color:#ffa0a0;color:#d00;}
+#status-bar{position:fixed;bottom:0;left:0;right:0;background:#f0e0d6;border-top:1px solid #d9bfb7;padding:2px 10px;font-size:9pt;color:#800;z-index:800;display:flex;gap:12px;align-items:center;}
+.wiki-table{border-collapse:collapse;width:100%;font-size:9pt;margin:6px 0;}
+.wiki-table th,.wiki-table td{border:1px solid #aaa;padding:4px 8px;}
+.wiki-table th{background:#f0e0d6;font-weight:bold;color:#800;}
+/* EDITOR LAYOUT */
+.ed-layout{display:flex;gap:0;border:1px solid #d9bfb7;}
+.ed-tpl-panel{width:200px;flex-shrink:0;background:#f5ece4;border-right:1px solid #d9bfb7;display:flex;flex-direction:column;max-height:600px;overflow:hidden;transition:width .2s,opacity .2s;}
+.ed-tpl-panel.collapsed{width:0;overflow:hidden;border-right:none;opacity:0;pointer-events:none;}
+.ed-tpl-panel-head{background:#ea8;border-bottom:1px solid #d9bfb7;padding:4px 8px;font-size:9pt;font-weight:bold;color:#800;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.ed-tpl-panel-head button{background:#98e;border:1px solid #7799cc;color:#000;font-size:8pt;padding:1px 6px;cursor:pointer;font-weight:bold;}
+.ed-tpl-list{flex:1;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:5px;}
+.ed-tpl-item{background:#fff;border:1px solid #d9bfb7;border-radius:3px;cursor:pointer;overflow:hidden;transition:border-color .15s,box-shadow .15s;flex-shrink:0;}
+.ed-tpl-item:hover{border-color:#e87020;box-shadow:0 2px 8px rgba(232,114,42,.18);}
+.ed-tpl-preview-box{pointer-events:none;background:#fffef0;border-bottom:1px solid #e8d0c0;min-height:50px;max-height:90px;overflow:hidden;padding:5px;font-size:75%;line-height:1.2;}
+.ed-tpl-preview-box *{pointer-events:none!important;font-size:inherit!important;line-height:inherit!important;}
+.ed-tpl-preview-box table{width:100%!important;}
+.ed-tpl-item-footer{padding:4px 7px;display:flex;align-items:center;justify-content:space-between;background:#f5ece4;}
+.ed-tpl-item-name{font-size:8pt;font-weight:bold;color:#800000;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
+.ed-tpl-item-ins{background:#98e;border:1px solid #7799cc;color:#000;font-size:7pt;padding:1px 5px;cursor:pointer;font-weight:bold;border-radius:2px;flex-shrink:0;}
+.ed-tpl-item-ins:hover{background:#aaf;}
+.ed-canvas-wrap{flex:1;min-width:0;display:flex;flex-direction:column;}
+.e-block[data-type="template"] .e-block-inner{background:#fffef0;border:1px dashed #e8b080;padding:6px!important;}
+/* MOBILE BOTTOM SHEET */
+#tpl-bottom-sheet{position:fixed;bottom:-100%;left:0;right:0;z-index:1050;background:#f5ece4;border-top:2px solid #d9bfb7;border-radius:14px 14px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.22);transition:bottom .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;max-height:75vh;}
+#tpl-bottom-sheet.open{bottom:0;}
+#tpl-bs-handle{text-align:center;padding:10px 0 4px;cursor:pointer;flex-shrink:0;}
+#tpl-bs-handle::before{content:'';display:inline-block;width:40px;height:4px;background:#c8a890;border-radius:2px;}
+#tpl-bs-head{background:#ea8;border-bottom:1px solid #d9bfb7;padding:6px 14px;display:flex;align-items:center;justify-content:space-between;font-weight:bold;font-size:10pt;color:#800;flex-shrink:0;}
+#tpl-bs-close{background:none;border:none;cursor:pointer;font-size:20px;color:#800;font-weight:bold;line-height:1;padding:0 2px;}
+#tpl-bs-close:hover{color:#d00;}
+#tpl-bs-list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding-bottom:30px;}
+/* Mobile template items — simpler for small screens */
+.bs-tpl-item{background:#fff;border:2px solid #d9bfb7;border-radius:4px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;}
+.bs-tpl-item:hover{border-color:#e87020;}
+.bs-tpl-preview{background:#fffef0;padding:6px;min-height:44px;max-height:66px;overflow:hidden;font-size:70%;line-height:1.2;pointer-events:none;}
+.bs-tpl-preview *{pointer-events:none!important;}
+.bs-tpl-footer{background:#f5ece4;padding:4px 6px;display:flex;align-items:center;justify-content:space-between;gap:4px;}
+.bs-tpl-name{font-size:8pt;font-weight:bold;color:#800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
+.bs-tpl-ins{background:#98e;border:1px solid #7799cc;color:#000;font-size:8pt;padding:2px 7px;cursor:pointer;font-weight:bold;border-radius:2px;white-space:nowrap;flex-shrink:0;}
+.bs-tpl-ins:hover{background:#aaf;}
+#tpl-bs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1040;}
+#tpl-bs-overlay.on{display:block;}
+/* SIDEBAR IMAGES */
+.sb-img-thumbs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px 6px;}
+.sb-img-thumb{aspect-ratio:1;overflow:hidden;border:1px solid #d9bfb7;cursor:pointer;background:#fffef0;display:flex;align-items:center;justify-content:center;}
+.sb-img-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.sb-img-thumb:hover{border-color:#e87020;}
+.sb-see-all{display:block;text-align:center;padding:3px;font-size:8pt;color:#0000ff;cursor:pointer;border-top:1px solid #e8d0c0;text-decoration:none;}
+.sb-see-all:hover{color:#d00;text-decoration:underline;}
+.booru-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;padding:8px 0;}
+.booru-card{border:2px solid #d9bfb7;background:#fffef0;cursor:pointer;overflow:hidden;transition:border-color .15s;}
+.booru-card:hover{border-color:#e87020;}
+.booru-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+.booru-card-name{font-size:7pt;color:#800;padding:2px 4px;background:#f5ece4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;}
+/* DRAG HANDLE */
+.tpl-drag-handle{position:absolute;top:0;left:0;right:0;height:20px;background:rgba(232,114,42,.18);cursor:grab;display:flex;align-items:center;justify-content:center;font-size:9px;color:#c45a18;letter-spacing:2px;user-select:none;opacity:0;transition:opacity .15s;z-index:6;border-bottom:1px dashed #e8b080;}
+.e-block:hover .tpl-drag-handle{opacity:1;}
+.tpl-drag-handle:active{cursor:grabbing;background:rgba(232,114,42,.35);}
+.tpl-edit-overlay{position:absolute;bottom:0;left:0;right:0;height:28px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;pointer-events:none;z-index:5;}
+.e-block:hover .tpl-edit-overlay{opacity:1;pointer-events:auto;}
+.tpl-edit-btn{background:#e87020;color:#fff;border:1px solid #c45a18;padding:2px 8px;font-size:8pt;font-weight:bold;cursor:pointer;border-radius:2px;box-shadow:0 2px 6px rgba(0,0,0,.3);}
+.tpl-edit-btn:hover{background:#c45a18;}
+.code-editor-wrap textarea{font-family:'Courier New',monospace;font-size:9pt;resize:vertical;background:#1e1e1e;color:#d4d4d4;border:1px solid #555;padding:8px;line-height:1.5;}
+.tpl-new-btn{display:inline-block;padding:2px 10px;background:#4a7d44;border:1px solid #3a6234;color:#fff;font-weight:bold;cursor:pointer;font-size:9pt;}
+.tpl-new-btn:hover{background:#3a6234;}
+.img-uploading{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#fff;font-size:12pt;}
+.img-uploading-spinner{width:40px;height:40px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.cat-badge{display:inline-block;background:#f0e0d6;border:1px solid #d9bfb7;padding:1px 7px;font-size:8pt;color:#800;margin:2px;cursor:pointer;border-radius:2px;}
+.cat-badge:hover{background:#e8d0c0;color:#d00;}
+.rc-item{padding:4px 0;border-bottom:1px solid #e8d0c0;font-size:9pt;}
+.rc-item:last-child{border-bottom:none;}
+.disc-thread{border:1px solid #d9bfb7;background:#fffef0;margin-bottom:10px;}
+.disc-thread-head{background:#f0e0d6;border-bottom:1px solid #d9bfb7;padding:4px 8px;font-weight:bold;font-size:9pt;color:#800;display:flex;align-items:center;gap:6px;}
+.disc-reply{border-top:1px solid #e8d0c0;padding:6px 10px;}
+.disc-meta{font-size:8pt;color:#117743;margin-bottom:3px;}
+.disc-content{font-size:9pt;color:#333;line-height:1.5;}
+.disc-actions{font-size:8pt;margin-top:3px;display:flex;gap:8px;}
+.disc-actions a{color:#0000ff;cursor:pointer;}
+.disc-new-thread{background:#f0e0d6;border:1px solid #d9bfb7;padding:8px 10px;margin-bottom:10px;}
+.disc-new-thread textarea,.disc-new-thread input{width:100%;border:1px solid #a9a9a9;padding:5px;font-size:9pt;font-family:arial;outline:none;background:#fff;color:#333;margin-bottom:5px;}
+.disc-new-thread textarea{resize:vertical;min-height:60px;}
+.rating-wrap{display:flex;align-items:center;gap:6px;margin:6px 0;font-size:9pt;}
+.rating-stars{display:flex;gap:2px;}
+.rating-star{font-size:16px;cursor:pointer;color:#ccc;}
+.rating-star.filled,.rating-star.hover{color:#e8a000;}
+.rev-item{padding:4px 0;border-bottom:1px solid #e8d0c0;font-size:9pt;display:flex;gap:8px;align-items:center;}
+.rev-time{color:#888;font-size:8pt;min-width:110px;}
+.rev-author{color:#117743;font-weight:bold;}
+.rev-restore{font-size:8pt;color:#0000ff;cursor:pointer;}
+.watch-btn{padding:1px 8px;font-size:8pt;border:1px solid #d9bfb7;background:#f0e0d6;cursor:pointer;color:#800;}
+.watch-btn.watching{background:#ffe0cc;border-color:#e87020;color:#c45a18;font-weight:bold;}
+.flag-btn{font-size:8pt;color:#888;cursor:pointer;border:none;background:none;padding:0;}
+.flag-btn:hover{color:#d00;}
+.sp-section{margin-bottom:16px;}
+.sp-section h3{font-size:10pt;font-weight:bold;color:#800;border-bottom:1px solid #d9bfb7;padding-bottom:3px;margin-bottom:6px;}
+#announce-bar{background:#ffe09c;border-bottom:2px solid #e8a000;padding:3px 10px;font-size:9pt;color:#7a4a00;text-align:center;display:none;}
+#announce-bar.on{display:block;}
+.contrib-item{padding:3px 0;border-bottom:1px dotted #e8d0c0;font-size:9pt;}
+.dyk-box{background:#eef4ff;border:1px solid #aac;padding:8px 12px;margin-bottom:10px;font-size:9pt;}
+.dyk-box strong{color:#000080;}
+/* USER PAGE */
+.user-info-card{background:#f5ece4;border:1px solid #d9bfb7;padding:10px 14px;margin-bottom:12px;display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.user-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;flex-shrink:0;}
+.proko-badge{display:inline-block;background:#a0d;color:#fff;padding:1px 7px;font-size:8pt;border-radius:2px;margin-left:4px;}
+.admin-badge{display:inline-block;background:#e87020;color:#fff;padding:1px 7px;font-size:8pt;border-radius:2px;margin-left:4px;}
+/* PROKO PANEL */
+.mod-section{background:#f9f0ff;border:1px solid #c8a0e0;padding:8px 12px;margin-bottom:12px;}
+.mod-section-head{font-size:10pt;font-weight:bold;color:#600080;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+@media(max-width:700px){
+  #hamburger{display:flex;}
+  #sidebar{position:fixed;left:0;top:28px;bottom:0;z-index:860;background:#ffe;width:175px;overflow-y:auto;transform:translateX(-100%);box-shadow:3px 0 12px rgba(0,0,0,.2);border-right:1px solid #d9bfb7;transition:transform .22s;}
+  #layout{padding:8px 5px 60px;}
+  .page-body{padding:10px 8px;}
+  #search-wrap input{width:90px;}
+  .ed-tpl-panel{display:none!important;}
+  .wiki-tb{top:28px;gap:2px;padding:3px 4px;}
+  .tb{padding:3px 5px;font-size:9pt;}
+  select.tb-sel{max-width:65px;font-size:8pt;}
+  .ed-layout{border:none;}
+  .ed-canvas-wrap{border:1px solid #d9bfb7;}
+  .ed-canvas{min-height:300px;}
+  .ed-canvas-inner{min-width:600px;min-height:300px;}
+  .booru-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));}
+  .ed-bar{padding:8px 10px;gap:6px;}
+  .ed-bar .btn-post,.ed-bar .btn-cancel{padding:4px 10px;font-size:9pt;}
+  #tpl-bs-list{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:480px){
+  .ph-actions{display:none;}
+  .ed-loc{width:100%;}
+}
+</style>
 </head>
 <body>
-
-<div id="header"></div>
-<div id="nav"></div>
-
-<div id="wrap">
-
-  <div class="notice">
-    🟢 Server is <strong>being made</strong> &mdash; connect at <code>babanepedia.com</code> when its finished.
-    &nbsp; | &nbsp; Version: <strong>26.1</strong> (Java Edition)
-    &nbsp; | &nbsp; <a href="apply.html" style="color:var(--accent);font-weight:bold;">► Apply to join</a>
+<div id="announce-bar"></div>
+<nav id="topnav">
+  <button id="hamburger" onclick="toggleSidebar()">☰</button>
+  <strong onclick="goHome()">
+    <img id="site-logo" src="favicon.png" alt="" onerror="this.style.display='none'">
+    Babane Pedia
+  </strong>
+  <span class="sep">—</span>
+  <span>[</span>
+  <a onclick="goHome()">Ana Sayfa</a>
+  <span class="sep">/</span>
+  <a onclick="navigate('templates')">Şablonlar</a>
+  <span class="sep">/</span>
+  <a onclick="navigate('recent')">Son Değişiklikler</a>
+  <span class="sep">/</span>
+  <a onclick="navigate('special')">Özel Sayfalar</a>
+  <span class="sep">/</span>
+  <a onclick="goRandom()">Rastgele</a>
+  <span>]</span>
+  <div id="topnav-right">
+    <div id="search-wrap">
+      <input type="search" id="search-input" placeholder="Ara…"
+        onkeydown="handleSearchKey(event,'search-ac')"
+        oninput="searchAC(this.value,'search-ac')"
+        onblur="setTimeout(()=>closeAC('search-ac'),200)">
+      <button onclick="doSearch()">🔍</button>
+      <div id="search-ac" class="search-ac-drop" style="display:none;"></div>
+    </div>
+    <span id="modpanel-toplink" style="display:none;"><a onclick="navigate('modpanel')" style="background:#a0d;border:1px solid #800ab0;padding:1px 8px;font-weight:bold;color:#fff!important;text-decoration:none;border-radius:2px;">🛡️ Mod</a></span>
+    <a onclick="openEditor()" style="background:#98e;border:1px solid #7799cc;padding:1px 8px;font-weight:bold;color:#000!important;text-decoration:none;">+ Yeni</a>
+    <span id="user-pill" onclick="toggleUserMenu()">[ Giriş ]</span>
   </div>
+</nav>
 
-  <!-- Welcome post -->
-  <div class="boardtitle">Welcome to babanepedia <span>— Survival / SMP</span></div>
-
-  <div class="board">
-    <div class="op-post clearfix">
-      <div class="post-info">
-        <span class="post-name">Admin</span>
-        <span class="post-date">&nbsp;## OP ##</span>
-        <span class="post-num">&nbsp;No.1</span>
-      </div>
-      <div class="post-img">
-        <!-- Replace with your own image: images/banner.png -->
-        <img src="images/banner.png" alt="Server Banner" onerror="this.style.display='none'">
-        <div class="img-info">server banner</div>
-      </div>
-      <div class="post-body">
-        <p><strong>Welcome to babanepedia!</strong></p>
-        <p>A survival Minecraft server where you can build, explore, and not be griefed (hopefully).</p>
-        <p class="greentext">&gt;no pay-to-win<br>&gt;friendly community<br>&gt;anti-grief protection<br>&gt;custom events</p>
-        <p>Join us on Discord for announcements, ban appeals, and general chaos.</p>
-      </div>
-    </div>
-
-    <div class="reply-box clearfix">
-      <div class="post-info">
-        <span class="post-name">Moderator</span>
-        <span class="post-date">&nbsp;No.2</span>
-      </div>
-      <div class="post-body">
-        <p>Read the <a href="rules.html">rules</a> before playing. Ignorance is not an excuse.</p>
-        <p>Check <a href="gallery.html">gallery</a> for community screenshots.</p>
-      </div>
-    </div>
+<div id="sb-overlay" onclick="closeSidebar()"></div>
+<div id="tpl-bs-overlay" onclick="closeTplSheet()"></div>
+<div id="tpl-bottom-sheet">
+  <div id="tpl-bs-handle" onclick="closeTplSheet()"></div>
+  <div id="tpl-bs-head">
+    <span>📋 Şablon Ekle</span>
+    <button id="tpl-bs-close" onclick="closeTplSheet()">✕</button>
   </div>
+  <div id="tpl-bs-list"></div>
+</div>
 
-  <hr class="board-sep">
-
-  <!-- Server info table -->
-  <div class="boardtitle">Server Info <span>— quick facts</span></div>
-  <table class="info-table">
-    <tr><th>IP Address</th><td><code>babanepedia.com</code></td></tr>
-    <tr><th>Version</th><td>Java 26.1 &nbsp;<span class="tag">Spigot+</span></td></tr>
-    <tr><th>Mode</th><td>Survival SMP</td></tr>
-    <tr><th>Map Reset</th><td>Every 6 months (world border: 10,000 blocks)</td></tr>
-    <tr><th>Plugins</th><td>Skin Restorer,Better Teams</td></tr>
-    <tr><th>Discord</th><td><a href="contact.html">https://discord.gg/sV46ra6fb3/a></td></tr>
-    <tr><th>Owner</th><td>Metoo123 &mdash; <span class="post-name">babanepedia</span></td></tr>
-  </table>
-
-  <hr class="board-sep">
-
-  <!-- Recent news as reply posts -->
-  <div class="boardtitle">Announcements <span>— latest news</span></div>
-
-  <div class="board">
-    <div class="op-post">
-      <div class="post-info">
-        <span class="post-name">Metoo123/span>
-        <span class="post-date">&nbsp;Pinned</span>
-      </div>
-      <div class="post-body">
-        <p><strong>[Announcement]</strong> Season 3 has started! Limited people, better and no lag.</p>
+<div id="layout">
+  <aside id="sidebar">
+    <div class="sbox">
+      <div class="sbox-head">Navigasyon</div>
+      <ul>
+        <li><a onclick="goHome();closeSidebar()">🏠 Ana Sayfa</a></li>
+        <li><a onclick="openEditor();closeSidebar()">✏️ Yeni Sayfa</a></li>
+        <li><a onclick="goRandom();closeSidebar()">🎲 Rastgele</a></li>
+        <li><a onclick="navigate('recent');closeSidebar()">🕐 Son Değişiklikler</a></li>
+        <li><a onclick="navigate('categories');closeSidebar()">🏷️ Kategoriler</a></li>
+        <li><a onclick="navigate('templates');closeSidebar()">📋 Şablonlar</a></li>
+        <li><a onclick="navigate('special');closeSidebar()">🔧 Özel Sayfalar</a></li>
+        <li><a onclick="navigate('wanted');closeSidebar()">❓ İstenen Sayfalar</a></li>
+        <li id="admin-nav-li" style="display:none"><a onclick="navigate('admin');closeSidebar()">⚙️ Admin <span class="pending-badge" id="sidebar-pending-count" style="display:none">0</span></a></li>
+        <li id="proko-nav-li" style="display:none"><a onclick="navigate('modpanel');closeSidebar()">🛡️ Mod Panel <span class="pending-badge" id="sidebar-mod-pending-count" style="display:none">0</span></a></li>
+      </ul>
+    </div>
+    <div class="sbox">
+      <div class="sbox-head">🔍 Ara</div>
+      <div style="padding:4px 6px;">
+        <div style="position:relative;">
+          <div style="display:flex;border:1px solid #a9a9a9;overflow:visible;background:#fff;">
+            <input type="search" id="sb-search-input" placeholder="Ara…"
+              style="flex:1;border:none;outline:none;padding:3px 6px;font-size:9pt;background:transparent;color:#800;"
+              onkeydown="handleSearchKey(event,'sb-search-ac')"
+              oninput="searchAC(this.value,'sb-search-ac')"
+              onblur="setTimeout(()=>closeAC('sb-search-ac'),200)">
+            <button onclick="doSidebarSearch()" style="background:#ea8;border:none;border-left:1px solid #d9bfb7;padding:3px 7px;cursor:pointer;font-size:10px;">🔍</button>
+          </div>
+          <div id="sb-search-ac" class="search-ac-drop" style="display:none;"></div>
+        </div>
       </div>
     </div>
-    <div class="reply-box">
-      <div class="post-info">
-        <span class="post-name">Aterdraa</span>
+    <div class="sbox">
+      <div class="sbox-head" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>🗃️ Katalog</span>
+        <button onclick="openAddImageToSidebar()" style="background:none;border:none;cursor:pointer;color:#800;font-size:13px;padding:0 2px;font-weight:bold;" title="Görsel Ekle">+</button>
       </div>
-      <div class="post-body">
-        <p>There will be less plugins. No complaining about lag.</p>
-      </div>
+      <div id="sb-images-list"><div style="padding:4px 8px;font-size:9pt;color:#a98;font-style:italic;">Yükleniyor…</div></div>
     </div>
-    <div class="reply-box">
-      <div class="post-info">
-        <span class="post-name">Aterdraa</span>
-      </div>
-      <div class="post-body">
-        <p>Weekly build contest: theme is <strong>UNDERGROUND BASES</strong>. Prize: 1 Mace.</p>
-      </div>
+    <div class="sbox">
+      <div class="sbox-head">📊 İstatistik</div>
+      <div class="sc" id="article-count">Yükleniyor…</div>
+      <div class="sc" id="user-count" style="border-top:1px solid #e8d0c0;margin-top:2px;"></div>
     </div>
+    <div class="sbox">
+      <div class="sbox-head">🔖 Takip Listem</div>
+      <div id="watchlist-sb" class="sc">—</div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-head">Hesap</div>
+      <ul>
+        <li><a onclick="toggleUserMenu();closeSidebar()" id="sidebar-login-link">Giriş / Kayıt</a></li>
+        <li id="sb-mypage-li" style="display:none"><a onclick="goMyPage();closeSidebar()">👤 Kullanıcı Sayfam</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main id="main-content"></main>
+</div>
+
+<div id="status-bar">
+  <span id="status-msg">Hazır</span>
+  <span id="status-blocks"></span>
+  <span style="margin-left:auto;font-size:8pt;">© 2026 Babane Pedia</span>
+</div>
+
+<div id="modal-overlay" class="modal-ov" style="display:none;" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head"><span id="modal-title">İşlem</span><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot" id="modal-footer"><button id="modal-cancel" onclick="closeModal()">İptal</button><button id="modal-ok" onclick="confirmModal()">Tamam</button></div>
   </div>
+</div>
 
-</div><!-- /wrap -->
+<div id="emoji-picker">
+  <input type="text" id="emoji-search" placeholder="Emoji ara…" oninput="filterEmojis(this.value)">
+  <div id="emoji-grid"></div>
+</div>
 
-<div id="footer"></div>
-<script src="js/site.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script>
+/* ══ FIREBASE ══ */
+const firebaseConfig={apiKey:"AIzaSyDAR05cMYAUjkub0smCQHpUZeoGPYe5vL0",authDomain:"bbd1-df752.firebaseapp.com",projectId:"bbd1-df752",storageBucket:"bbd1-df752.firebasestorage.app",messagingSenderId:"969753899093",appId:"1:969753899093:web:47b337dff43a0af4cde4dc",measurementId:"G-G7L3FHFEV9"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+
+/* ══ IMAGE CACHE ══ */
+window._imageCache={};
+function preloadFirebaseImages(){
+  return new Promise(resolve=>{
+    db.ref("images").once("value",snap=>{
+      window._imageCache={};
+      const data=snap.val();
+      if(data){Object.values(data).forEach(img=>{if(img.name&&img.dataUrl){const n=img.name.trim();window._imageCache[n]=img.dataUrl;window._imageCache[n.toLowerCase()]=img.dataUrl;const ne=n.replace(/\.[^.]+$/,"");window._imageCache[ne]=img.dataUrl;window._imageCache[ne.toLowerCase()]=img.dataUrl;}});}
+      resolve();
+    });
+  });
+}
+db.ref("images").on("value",snap=>{window._imageCache={};const data=snap.val();if(data){Object.values(data).forEach(img=>{if(img.name&&img.dataUrl){const n=img.name.trim();window._imageCache[n]=img.dataUrl;window._imageCache[n.toLowerCase()]=img.dataUrl;const ne=n.replace(/\.[^.]+$/,"");window._imageCache[ne]=img.dataUrl;window._imageCache[ne.toLowerCase()]=img.dataUrl;}});}});
+function getCachedImageUrl(f){if(!f)return null;const s=f.trim();return window._imageCache[s]||window._imageCache[s.toLowerCase()]||window._imageCache[s.replace(/\.[^.]+$/,"")]||window._imageCache[s.replace(/\.[^.]+$/,"").toLowerCase()]||null;}
+
+/* ══ BUILT-IN TEMPLATES ══ */
+const BUILTIN_TEMPLATES=[
+  {name:"Öne Çıkan",slug:"one-cikan",desc:"Kırmızı-turuncu gradyan banner",html:`<table style="margin:5px auto;padding:.2em;width:fit-content;background:linear-gradient(180deg,#d60022,#d75f09,#F7C800);border:2px solid #000;font-size:95%;text-align:center;border-collapse:collapse;" cellspacing="0" cellpadding="0"><tr><td style="padding:6px 10px;"><span style="font-size:1.4em;color:#fff;text-shadow:-1px -1px #000,1px -1px #000,-1px 1px #000,1px 1px #000"><b>{{{içerik|Bu sayfa öne çıkarılmıştır!}}}</b></span><br><span style="color:#fff;text-shadow:-1px -1px #000,1px -1px #000,-1px 1px #000,1px 1px #000">{{{alt|Önemli içerik}}}</span></td></tr></table>`},
+  {name:"Bilgi Kutusu",slug:"bilgi-kutusu",desc:"Sağa hizalı bilgi kutusu",html:`<table style="float:right;clear:right;margin:0 0 10px 14px;background:#f0e0d6;border:2px solid #d9bfb7;font-size:9pt;width:200px;border-collapse:collapse;"><tr><th colspan="2" style="background:#ea8;color:#800;padding:5px 8px;text-align:center;font-size:10pt;border-bottom:1px solid #d9bfb7;">{{{başlık|Bilgi Kutusu}}}</th></tr><tr><td style="padding:4px 7px;border-top:1px solid #e8d0c0;font-weight:bold;">Alan 1</td><td style="padding:4px 7px;border-top:1px solid #e8d0c0;">{{{alan1|Değer}}}</td></tr><tr><td style="padding:4px 7px;border-top:1px solid #e8d0c0;font-weight:bold;">Alan 2</td><td style="padding:4px 7px;border-top:1px solid #e8d0c0;">{{{alan2|Değer}}}</td></tr></table>`},
+  {name:"Uyarı",slug:"uyari",desc:"Turuncu uyarı banner",html:`<div style="border-left:4px solid #e8a000;background:#fff8e0;padding:7px 12px;margin:6px 0;"><span>⚠️</span> <strong style="color:#7a4a00;">{{{başlık|Dikkat!}}}</strong><br><span style="font-size:9pt;color:#555;">{{{içerik|Bu sayfada eksik bilgi bulunabilir.}}}</span></div>`},
+  {name:"Alıntı",slug:"alinti",desc:"Dekoratif alıntı bloğu",html:`<blockquote style="border-left:3px solid #800000;background:#fff9f0;margin:10px 0;padding:10px 14px;font-style:italic;color:#800000;"><span style="font-size:2em;color:#d9bfb7;line-height:1;float:left;margin-right:6px;">"</span><span>{{{metin|Bir alıntı buraya gelecek.}}}</span><cite style="display:block;margin-top:6px;font-size:9pt;color:#800;font-style:normal;">— {{{kaynak|Kaynak}}}</cite></blockquote>`},
+  {name:"Taslak",slug:"taslak",desc:"Sayfa taslak bildirimi",html:`<table style="width:100%;background:#f0e0d6;border:1px solid #d9bfb7;padding:6px 10px;margin:8px 0;border-collapse:collapse;"><tr><td style="width:30px;font-size:20px;">📝</td><td style="font-size:9pt;color:#800000;">Bu makale bir <b>taslak</b> niteliğindedir. İçeriği genişletebilirsiniz.</td></tr></table>`},
+  {name:"Spoiler",slug:"spoiler",desc:"Üzerine gelince gizleme",html:`<span style="background:#800000;color:#800000;padding:0 3px;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#800000'" title="Spoiler">{{{metin|Spoiler içerik}}}</span>`},
+  {name:"Silme Adayı",slug:"silme-adayi",desc:"Silinecek sayfa etiketi",html:`<div style="border:2px solid #d00;background:#fff0f0;padding:6px 10px;margin:6px 0;font-size:9pt;"><span style="color:#d00;font-weight:bold;">🗑️ SİLME ADAYI</span> — Bu sayfa silinmek üzere işaretlenmiştir. <span style="color:#555;">{{{sebep|Sebep belirtilmemiş.}}}</span></div>`},
+  {name:"Çeviri Gerekli",slug:"ceviri",desc:"Çeviri gereken içerik",html:`<div style="border-left:3px solid #0000ff;background:#eef4ff;padding:6px 10px;margin:6px 0;font-size:9pt;color:#000080;">🌐 Bu sayfanın tamamı veya bir kısmı <b>çeviri</b> gerektirmektedir.</div>`},
+  {name:"İçerik Uyarısı",slug:"icerik-uyarisi",desc:"Hassas içerik uyarısı",html:`<div style="border:2px solid #800000;background:#fff9f0;padding:8px 12px;margin:8px 0;text-align:center;"><span style="font-size:16px;">⚠️</span><br><strong style="color:#800000;font-size:10pt;">İÇERİK UYARISI</strong><br><span style="font-size:9pt;color:#555;">{{{içerik|Bu sayfa hassas içerik barındırabilir.}}}</span></div>`}
+];
+
+/* ══ AUTH ══ */
+const ADMIN_USER="sly",ADMIN_PASS="sevil177";
+let currentUser=null;
+function loadSession(){try{const s=localStorage.getItem("bbd_u");if(s)currentUser=JSON.parse(s);}catch(e){}updateUserPill();updateAdminNav();}
+function saveSession(u){currentUser=u;localStorage.setItem("bbd_u",JSON.stringify(u));}
+function clearSession(){currentUser=null;localStorage.removeItem("bbd_u");}
+function isAdmin(){return currentUser&&currentUser.role==="admin";}
+function isProko(){return currentUser&&(currentUser.role==="proko"||currentUser.role==="moderator");}
+function canModerate(){return isAdmin()||isProko();}
+function canAutoApprove(){return isAdmin()||isProko();}
+function isLoggedIn(){return!!currentUser;}
+
+/* ══ WATCHLIST ══ */
+function getWatchlist(){try{return JSON.parse(localStorage.getItem("bbd_watch")||"[]");}catch(e){return[];}}
+function saveWatchlist(wl){localStorage.setItem("bbd_watch",JSON.stringify(wl));}
+function isWatching(slug){return getWatchlist().includes(slug);}
+function toggleWatch(slug){let wl=getWatchlist();if(wl.includes(slug)){wl=wl.filter(s=>s!==slug);setStatus("Takipten çıkarıldı.");}else{wl.push(slug);setStatus("Takibe alındı!");}saveWatchlist(wl);updateWatchlistSidebar();return wl.includes(slug);}
+function updateWatchlistSidebar(){const el=document.getElementById("watchlist-sb");if(!el)return;const wl=getWatchlist();if(!wl.length){el.textContent="—";return;}el.innerHTML=wl.slice(0,5).map(slug=>`<div style="padding:2px 8px;font-size:9pt;"><a onclick="navigate('article/${slug}')" style="color:#0000ff;">${slug}</a></div>`).join("")+(wl.length>5?`<div style="padding:2px 8px;font-size:8pt;color:#888;">+${wl.length-5} daha</div>`:"");}
+
+/* ══ IMAGES ══ */
+function showUploadingOverlay(m){let el=document.getElementById("img-uploading-ov");if(!el){el=document.createElement("div");el.id="img-uploading-ov";el.className="img-uploading";document.body.appendChild(el);}el.innerHTML=`<div class="img-uploading-spinner"></div><div>${m||"Yükleniyor…"}</div>`;el.style.display="flex";}
+function hideUploadingOverlay(){const el=document.getElementById("img-uploading-ov");if(el)el.style.display="none";}
+function addFirebaseImage(name,dataUrl,cb){
+  showUploadingOverlay("Görsel yükleniyor…");
+  db.ref("images/"+name.replace(/[.#$\[\]]/g,"_")).set({name,dataUrl,addedAt:Date.now()},err=>{
+    hideUploadingOverlay();if(err){alert("Yükleme hatası: "+err.message);return;}
+    renderSidebarImages();if(cb)cb();
+  });
+}
+function deleteFirebaseImage(key){db.ref("images/"+key).remove(()=>renderSidebarImages());}
+function renderSidebarImages(){
+  const el=document.getElementById("sb-images-list");if(!el)return;
+  db.ref("images").once("value",snap=>{
+    const data=snap.val();
+    if(!data){el.innerHTML=`<div style="padding:4px 8px;font-size:9pt;color:#a98;font-style:italic;">Henüz görsel yok</div>`;return;}
+    const imgs=Object.entries(data).map(([k,v])=>({key:k,...v})).sort((a,b)=>b.addedAt-a.addedAt);
+    const prev=imgs.slice(0,2);
+    el.innerHTML=`<div class="sb-img-thumbs">${prev.map(img=>`<div class="sb-img-thumb" onclick="insertFBImgToCanvas('${escHtml(img.key)}')" title="${escHtml(img.name)}"><img src="${escHtml(img.dataUrl)}" alt="${escHtml(img.name)}" loading="lazy"></div>`).join("")}</div><a class="sb-see-all" onclick="navigate('gallery')">🖼️ Tüm katalog (${imgs.length})</a>`;
+  });
+}
+function insertFBImgToCanvas(key){
+  const canvas=document.getElementById("editor-canvas-inner");if(!canvas){alert("Editörde açık değil.");return;}
+  db.ref("images/"+key).once("value",snap=>{
+    if(!snap.exists())return;const img=snap.val();
+    const pos=getSpawnPos();const block=createBlock("image",pos.x,pos.y);block.style.width="200px";block.style.height="150px";
+    const inner=block.querySelector(".e-block-inner");inner.contentEditable=false;
+    const imgEl=document.createElement("img");imgEl.src=img.dataUrl;imgEl.draggable=false;inner.appendChild(imgEl);
+    canvas.appendChild(block);updateBlockCount();selectBlock(block);
+  });
+}
+
+/* ══ AUTO-CATALOG PAGE IMAGES ══ */
+function autoCatalogPageImages(slug,blocks){
+  if(!blocks||!blocks.length)return;
+  blocks.forEach((b,i)=>{
+    if(b.type==="image"&&b.content&&b.content.startsWith("data:")){
+      const key=("pageimg_"+slug+"_"+i).replace(/[.#$\[\]\s]/g,"_");
+      db.ref("images/"+key).once("value",snap=>{
+        if(snap.exists())return;
+        const ext=b.content.indexOf("image/png")>-1?".png":".jpg";
+        db.ref("images/"+key).set({name:slug+"-gorsel-"+(i+1)+ext,dataUrl:b.content,addedAt:Date.now(),fromPage:slug},()=>renderSidebarImages());
+      });
+    }
+  });
+}
+
+/* ══ SEARCH AUTOCOMPLETE ══ */
+let _acCache=[];let _acSel=-1;
+function initAcCache(){db.ref("articles").on("value",snap=>{_acCache=snap.val()?Object.values(snap.val()):[];});}
+function searchAC(q,dropId){
+  const el=document.getElementById(dropId);if(!el)return;
+  _acSel=-1;
+  if(!q||q.length<1){el.style.display="none";return;}
+  const ql=q.toLowerCase();
+  const matches=_acCache.filter(a=>a.title&&a.title.toLowerCase().includes(ql)).slice(0,8);
+  if(!matches.length){el.style.display="none";return;}
+  el.innerHTML=matches.map((a,i)=>`<div class="search-ac-item" data-slug="${a.slug}" data-idx="${i}" onmousedown="event.preventDefault();navigate('article/${a.slug}');closeAC('${dropId}');">${escHtml(a.title)}</div>`).join("");
+  el.style.display="block";
+}
+function handleSearchKey(e,dropId){
+  const el=document.getElementById(dropId);
+  const items=el?el.querySelectorAll(".search-ac-item"):[];
+  if(e.key==="ArrowDown"){e.preventDefault();_acSel=Math.min(_acSel+1,items.length-1);items.forEach((it,i)=>it.classList.toggle("hovered",i===_acSel));}
+  else if(e.key==="ArrowUp"){e.preventDefault();_acSel=Math.max(_acSel-1,0);items.forEach((it,i)=>it.classList.toggle("hovered",i===_acSel));}
+  else if(e.key==="Enter"){
+    if(_acSel>=0&&items[_acSel]){navigate("article/"+items[_acSel].dataset.slug);closeAC(dropId);}
+    else doSearch();
+  }else if(e.key==="Escape"){closeAC(dropId);}
+}
+function closeAC(id){const el=document.getElementById(id);if(el)el.style.display="none";_acSel=-1;}
+
+/* ══ CATALOG ══ */
+function renderGallery(){
+  document.title="Katalog — Babane Pedia";setStatus("Katalog");
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head">
+        <div class="ph-tabs"><span class="ph-tab active">🖼️ Katalog</span></div>
+        <div class="ph-actions"><a onclick="openAddImageToSidebar()">+ Görsel Ekle</a><a onclick="goHome()">Ana Sayfa</a></div>
+      </div>
+      <div class="page-body"><div id="booru-grid-wrap"><div class="empty-state">Yükleniyor…</div></div></div>
+    </div>`;
+  db.ref("images").once("value",snap=>{
+    const el=document.getElementById("booru-grid-wrap");if(!el)return;
+    const data=snap.val();
+    if(!data){el.innerHTML=`<div class="empty-state">Henüz görsel yok.<br><button class="btn-post" style="margin-top:10px;" onclick="openAddImageToSidebar()">+ Görsel Ekle</button></div>`;return;}
+    const imgs=Object.entries(data).map(([k,v])=>({key:k,...v})).sort((a,b)=>b.addedAt-a.addedAt);
+    el.innerHTML=`<div class="booru-grid">${imgs.map(img=>`<div class="booru-card"><img src="${escHtml(img.dataUrl)}" alt="${escHtml(img.name)}" onclick="openGalleryImage('${escHtml(img.key)}')" loading="lazy"><div class="booru-card-name">${escHtml(img.name)}</div>${isAdmin()?`<div style="text-align:center;padding:2px;background:#f5ece4;"><button onclick="deleteFirebaseImage('${escHtml(img.key)}');navigate('gallery');" style="background:none;border:none;color:#d00;cursor:pointer;font-size:9pt;">🗑️ Sil</button></div>`:""}</div>`).join("")}</div>`;
+  });
+}
+function openGalleryImage(key){
+  db.ref("images/"+key).once("value",snap=>{
+    if(!snap.exists())return;const img=snap.val();
+    document.getElementById("modal-title").textContent="🖼️ "+img.name;
+    document.getElementById("modal-body").innerHTML=`<div style="text-align:center;"><img src="${escHtml(img.dataUrl)}" style="max-width:100%;max-height:60vh;object-fit:contain;border:1px solid #d9bfb7;"><div style="margin-top:8px;font-size:9pt;color:#800;">${escHtml(img.name)}</div><div style="margin-top:8px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button onclick="insertFBImgToCanvas('${escHtml(img.key)}');closeModal();" class="btn-post">✏️ Editöre Ekle</button>${isAdmin()?`<button onclick="deleteFirebaseImage('${escHtml(img.key)}');closeModal();navigate('gallery');" class="btn-reject" style="padding:5px 12px;">🗑️ Sil</button>`:""}</div></div>`;
+    document.getElementById("modal-footer").style.display="none";
+    document.getElementById("modal-overlay").style.display="flex";
+  });
+}
+function openAddImageToSidebar(){
+  document.getElementById("modal-title").textContent="🗃️ Katalog'a Görsel Ekle";
+  document.getElementById("modal-footer").style.display="none";
+  document.getElementById("modal-body").innerHTML=`
+    <label>Görsel Adı (ör: saygo.png):</label>
+    <input type="text" id="sb-img-name" placeholder="saygo.png" style="width:100%;border:1px solid #a9a9a9;padding:5px 8px;font-size:10pt;margin-bottom:10px;">
+    <label class="img-up-wrap" id="sb-upload-drop" ondragover="handleDragOver(event)" ondragleave="handleDragLeave2(event)" ondrop="handleSbDrop(event)" style="display:block;">
+      <input type="file" id="sb-img-file" accept="image/*" onchange="handleSbFileSelect(event)">
+      <div style="font-size:22px;">🖼️</div><div>Sürükle veya <u>tıkla</u></div>
+    </label>
+    <div id="sb-upload-prev" style="display:none;margin-top:8px;gap:8px;align-items:center;" class="upload-prev">
+      <img id="sb-thumb" style="width:48px;height:48px;object-fit:cover;border:1px solid #d9bfb7;">
+      <span id="sb-fname" style="font-size:9pt;color:#800;word-break:break-all;flex:1;"></span>
+      <button onclick="clearSbUpload()" style="background:none;border:none;color:#d00;cursor:pointer;font-size:16px;">✕</button>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:10px;">
+      <button onclick="confirmAddSidebarImage()" style="flex:1;padding:4px;background:#98e;border:1px solid #7799cc;cursor:pointer;font-weight:bold;font-size:10pt;">✅ Kaydet</button>
+      <button onclick="closeModal()" style="padding:4px 12px;background:#f0e0d6;border:1px solid #d9bfb7;cursor:pointer;font-size:10pt;">İptal</button>
+    </div>`;
+  window._sbImgData=null;
+  document.getElementById("modal-overlay").style.display="flex";
+  setTimeout(()=>{const n=document.getElementById("sb-img-name");if(n)n.focus();},50);
+}
+function handleSbDrop(e){e.preventDefault();document.getElementById("sb-upload-drop").classList.remove("dragover");const f=e.dataTransfer.files[0];if(f&&f.type.startsWith("image/"))processSbFile(f);}
+function handleSbFileSelect(e){const f=e.target.files[0];if(f)processSbFile(f);}
+function processSbFile(file){const r=new FileReader();r.onload=ev=>{window._sbImgData=ev.target.result;const prev=document.getElementById("sb-upload-prev");prev.style.display="flex";document.getElementById("sb-thumb").src=ev.target.result;document.getElementById("sb-fname").textContent=file.name;const ni=document.getElementById("sb-img-name");if(ni&&!ni.value)ni.value=file.name;};r.readAsDataURL(file);}
+function clearSbUpload(){window._sbImgData=null;document.getElementById("sb-upload-prev").style.display="none";document.getElementById("sb-img-file").value="";}
+function confirmAddSidebarImage(){const name=(document.getElementById("sb-img-name").value||"").trim();if(!name){alert("Görsel adı girin.");return;}if(!window._sbImgData){alert("Önce bir görsel seç.");return;}closeModal();addFirebaseImage(name,window._sbImgData,()=>setStatus("Eklendi: "+name));}
+
+/* ══ USER UI ══ */
+function updateUserPill(){
+  const p=document.getElementById("user-pill"),sl=document.getElementById("sidebar-login-link"),mp=document.getElementById("sb-mypage-li");
+  if(!currentUser){p.textContent="[ Giriş Yap ]";p.className="";if(sl)sl.textContent="Giriş / Kayıt";if(mp)mp.style.display="none";return;}
+  const lbl=isAdmin()?"⚙️ ":isProko()?"🛡️ ":"";
+  p.textContent="[ "+lbl+currentUser.username+" | Çıkış ]";
+  p.className=isAdmin()?"admin-pill":isProko()?"proko-pill":"";
+  if(sl)sl.textContent="🚪 Çıkış ("+currentUser.username+")";
+  if(mp)mp.style.display="block";
+}
+function goMyPage(){if(currentUser)navigate("user/"+currentUser.username);}
+function updateAdminNav(){
+  const adminLi=document.getElementById("admin-nav-li");
+  const prokoLi=document.getElementById("proko-nav-li");
+  const prokoTopLink=document.getElementById("modpanel-toplink");
+  if(adminLi)adminLi.style.display=isAdmin()?"block":"none";
+  if(prokoLi)prokoLi.style.display=(isProko()&&!isAdmin())?"block":"none";
+  if(prokoTopLink)prokoTopLink.style.display=(isProko()&&!isAdmin())?"inline":"none";
+  if(isAdmin())refreshPendingCount("sidebar-pending-count");
+  if(isProko()&&!isAdmin())refreshPendingCount("sidebar-mod-pending-count");
+}
+function refreshPendingCount(elId){
+  db.ref("pending").once("value",snap=>{
+    const n=snap.val()?Object.keys(snap.val()).length:0;
+    const b=document.getElementById(elId);
+    if(b){b.textContent=n;b.style.display=n>0?"inline":"none";}
+  });
+}
+function toggleUserMenu(){if(!currentUser){showLoginModal();return;}showConfirmModal('"'+currentUser.username+'" olarak çıkış yap?',()=>{clearSession();updateUserPill();updateAdminNav();setStatus("Çıkış yapıldı.");});}
+
+function showLoginModal(){
+  document.getElementById("modal-title").textContent="Giriş Yap / Kayıt Ol";
+  document.getElementById("modal-footer").style.display="none";
+  document.getElementById("modal-body").innerHTML=`
+    <div class="auth-tabs"><button class="auth-tab on" id="atab-login" onclick="switchAuthTab('login')">Giriş Yap</button><button class="auth-tab" id="atab-reg" onclick="switchAuthTab('reg')">Kayıt Ol</button></div>
+    <div id="auth-err" class="modal-err" style="display:none"></div>
+    <div id="auth-login">
+      <input class="auth-inp" id="l-user" placeholder="Kullanıcı Adı" autocomplete="username">
+      <input class="auth-inp" type="password" id="l-pass" placeholder="Şifre" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="auth-sub" onclick="doLogin()">Giriş Yap</button>
+    </div>
+    <div id="auth-reg" style="display:none">
+      <input class="auth-inp" id="r-user" placeholder="Kullanıcı Adı (min 3)" autocomplete="off">
+      <input class="auth-inp" type="password" id="r-pass" placeholder="Şifre (min 6)" onkeydown="if(event.key==='Enter')doRegister()">
+      <button class="auth-sub" onclick="doRegister()">Kayıt Ol</button>
+    </div>`;
+  document.getElementById("modal-overlay").style.display="flex";
+  setTimeout(()=>{const e=document.getElementById("l-user");if(e)e.focus();},60);
+}
+function switchAuthTab(tab){const isL=tab==="login";document.getElementById("auth-login").style.display=isL?"block":"none";document.getElementById("auth-reg").style.display=isL?"none":"block";document.getElementById("atab-login").className="auth-tab"+(isL?" on":"");document.getElementById("atab-reg").className="auth-tab"+(isL?"":" on");document.getElementById("auth-err").style.display="none";}
+function authErr(m){const e=document.getElementById("auth-err");if(e){e.textContent=m;e.style.display="block";}}
+function doLogin(){
+  const u=(document.getElementById("l-user").value||"").trim(),p=(document.getElementById("l-pass").value||"").trim();
+  if(!u||!p){authErr("Kullanıcı adı ve şifre gerekli.");return;}
+  if(u===ADMIN_USER&&p===ADMIN_PASS){saveSession({username:u,role:"admin"});closeModal();updateUserPill();updateAdminNav();setStatus("Admin: "+u);return;}
+  db.ref("users/"+u).once("value",snap=>{
+    if(!snap.exists()){authErr("Kullanıcı bulunamadı.");return;}
+    const d=snap.val();if(d.password!==p){authErr("Şifre yanlış.");return;}
+    if(d.banned){authErr("Bu hesap yasaklandı.");return;}
+    saveSession({username:u,role:d.role||"user"});closeModal();updateUserPill();updateAdminNav();setStatus("Giriş: "+u);
+  });
+}
+function doRegister(){
+  const u=(document.getElementById("r-user").value||"").trim(),p=(document.getElementById("r-pass").value||"").trim();
+  if(u.length<3){authErr("Kullanıcı adı en az 3 karakter.");return;}
+  if(p.length<6){authErr("Şifre en az 6 karakter.");return;}
+  if(u===ADMIN_USER){authErr("Bu ad kullanılamaz.");return;}
+  db.ref("users/"+u).once("value",snap=>{if(snap.exists()){authErr("Bu kullanıcı adı alınmış.");return;}db.ref("users/"+u).set({password:p,role:"user",createdAt:Date.now()},err=>{if(err){authErr("Hata: "+err.message);return;}saveSession({username:u,role:"user"});closeModal();updateUserPill();updateAdminNav();setStatus("Kayıt: "+u);});});
+}
+
+/* ══ PROKO MANAGEMENT ══ */
+function grantProko(username){showConfirmModal(`"${username}" kullanıcısına 🛡️ Proko (Moderatör) yetkisi ver?`,()=>{db.ref("users/"+username+"/role").set("proko",()=>{setStatus(username+" artık Proko!");renderAdmin();});});}
+function revokeProko(username){showConfirmModal(`"${username}" kullanıcısının Proko yetkisini kaldır?`,()=>{db.ref("users/"+username+"/role").set("user",()=>{setStatus("Yetki kaldırıldı.");renderAdmin();});});}
+
+/* ══ USER PAGES — regular wiki pages ══ */
+/* User pages are stored as normal articles with slug "user-{username}" */
+/* Title is "User:username" */
+function userPageSlug(username){return"user-"+slugify(username);}
+
+function renderUserPage(username){
+  const slug=userPageSlug(username);
+  document.title="User:"+username+" — Babane Pedia";
+  setStatus("Kullanıcı: "+username);
+  const canEdit=isAdmin()||isProko()||(isLoggedIn()&&currentUser.username===username);
+  const avatarColor=["#e87020","#a0d","#117743","#0055bb","#800000"][username.charCodeAt(0)%5];
+  Promise.all([
+    db.ref("articles/"+slug).once("value"),
+    db.ref("users/"+username).once("value"),
+    loadAllTemplates(),
+    preloadFirebaseImages()
+  ]).then(([artSnap,userSnap,templates])=>{
+    const userInfo=userSnap.val()||{};
+    const joinDate=userInfo.createdAt?new Date(userInfo.createdAt).toLocaleDateString("tr-TR"):"?";
+    const role=userInfo.role||"user";
+    const roleBadge=role==="admin"?`<span class="admin-badge">⚙️ Admin</span>`:role==="proko"?`<span class="proko-badge">🛡️ Proko</span>`:"";
+    const headerHtml=`
+      <div class="user-info-card">
+        <div class="user-avatar" style="background:${avatarColor};">${username.charAt(0).toUpperCase()}</div>
+        <div style="flex:1;">
+          <div style="font-size:14pt;font-weight:bold;color:#d00;font-family:tahoma;">User:${escHtml(username)}${roleBadge}</div>
+          <div style="font-size:9pt;color:#117743;margin-top:2px;">📅 Kayıt: ${escHtml(joinDate)}</div>
+          <div style="margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;font-size:9pt;">
+            <a onclick="navigate('contributions/${username}')">📝 Katkılar</a>
+            <a onclick="navigate('discussion/${slug}')">💬 Tartışma</a>
+          </div>
+        </div>
+      </div>`;
+    if(artSnap.exists()){
+      const a=artSnap.val();
+      const ch=computeCanvasH(a.blocks||[]);
+      const bHtml=(a.blocks||[]).map(b=>{
+        const w=b.width?`width:${b.width};`:"",h=b.height?`height:${b.height};`:"";
+        if(b.type==="template")return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}">${renderTemplateTags(b.tplTag||b.content,templates)}</div>`;
+        if(b.type==="text")return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}">${renderTemplateTags(b.content,templates)}</div>`;
+        return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}"><img src="${escHtml(b.content)}" alt=""></div>`;
+      }).join("");
+      document.getElementById("main-content").innerHTML=`
+        <div class="page-wrap">
+          <div class="page-head">
+            <div class="ph-tabs">
+              <span class="ph-tab active">👤 User:${escHtml(username)}</span>
+              <span class="ph-tab" onclick="navigate('contributions/${username}')">📝 Katkılar</span>
+              <span class="ph-tab" onclick="navigate('discussion/${slug}')">💬 Tartışma</span>
+              ${canEdit?`<span class="ph-tab" onclick="navigate('editor/${slug}')">✏️ Düzenle</span>`:""}
+            </div>
+            <div class="ph-actions">${canEdit?`<a onclick="navigate('editor/${slug}')">✏️ Düzenle</a>`:""}</div>
+          </div>
+          <div class="page-body">
+            ${headerHtml}
+            <div class="viewer-canvas" style="min-height:${ch}px;">${bHtml}</div>
+          </div>
+        </div>`;
+    } else {
+      document.getElementById("main-content").innerHTML=`
+        <div class="page-wrap">
+          <div class="page-head">
+            <div class="ph-tabs">
+              <span class="ph-tab active">👤 User:${escHtml(username)}</span>
+              <span class="ph-tab" onclick="navigate('contributions/${username}')">📝 Katkılar</span>
+              ${canEdit?`<span class="ph-tab" onclick="openUserPageEditor('${username}')">✏️ Oluştur</span>`:""}
+            </div>
+          </div>
+          <div class="page-body">
+            ${headerHtml}
+            <div class="notice">${canEdit?`Bu kullanıcı sayfası henüz boş. <a style="cursor:pointer;text-decoration:underline;" onclick="openUserPageEditor('${username}')">Oluşturmak için tıkla.</a>`:"Bu kullanıcı henüz bir kullanıcı sayfası oluşturmamış."}</div>
+          </div>
+        </div>`;
+    }
+  });
+}
+
+function openUserPageEditor(username){
+  /* Opens the regular block editor, pre-fills title as User:username */
+  const slug=userPageSlug(username);
+  navigate("editor/"+slug);
+  /* Title pre-fill is handled in renderEditor via the special slug prefix */
+}
+
+/* ══ ROUTER ══ */
+window.addEventListener("hashchange",router);
+function navigate(p){location.hash="#"+p;}
+function goHome(){navigate("");}
+function openEditor(){navigate("editor");}
+function goRandom(){db.ref("articles").once("value",snap=>{const data=snap.val();if(!data){setStatus("Hiç sayfa yok.");return;}const vals=Object.values(data);navigate("article/"+vals[Math.floor(Math.random()*vals.length)].slug);});}
+function router(){
+  closeEmojiPicker();closeAC("search-ac");closeAC("sb-search-ac");
+  const hash=location.hash.replace(/^#\/?/,"");
+  if(hash.startsWith("article/"))loadArticle(hash.slice(8));
+  else if(hash.startsWith("editor/"))renderEditor(hash.slice(7));
+  else if(hash==="editor")renderEditor(null);
+  else if(hash==="admin")renderAdmin();
+  else if(hash==="modpanel")renderModPanel();
+  else if(hash==="templates")renderTemplates();
+  else if(hash==="gallery")renderGallery();
+  else if(hash==="recent")renderRecentChanges();
+  else if(hash==="categories")renderCategories();
+  else if(hash.startsWith("category/"))renderCategory(decodeURIComponent(hash.slice(9)));
+  else if(hash==="special")renderSpecialPages();
+  else if(hash==="wanted")renderWantedPages();
+  else if(hash.startsWith("discussion/"))renderDiscussion(hash.slice(11));
+  else if(hash.startsWith("history/"))renderHistory(hash.slice(8));
+  else if(hash.startsWith("contributions/"))renderContributions(hash.slice(14));
+  else if(hash.startsWith("user/"))renderUserPage(decodeURIComponent(hash.slice(5)));
+  else renderHome();
+}
+
+/* ══ UTILS ══ */
+function slugify(t){return(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ğ/g,"g").replace(/ü/g,"u").replace(/ş/g,"s").replace(/ı/g,"i").replace(/ö/g,"o").replace(/ç/g,"c").replace(/\s+/g,"-").replace(/[^\w\-]+/g,"").replace(/--+/g,"-").substring(0,80);}
+function setStatus(m){document.getElementById("status-msg").textContent=m;}
+function setStatusBlocks(m){document.getElementById("status-blocks").textContent=m;}
+function escHtml(s){if(typeof s!=="string")return"";return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function stripTags(s){return(s||"").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();}
+function fmtSize(b){if(b<1024)return b+"B";if(b<1048576)return(b/1024).toFixed(1)+"KB";return(b/1048576).toFixed(1)+"MB";}
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("mob-open");document.getElementById("sb-overlay").classList.toggle("on");}
+function closeSidebar(){document.getElementById("sidebar").classList.remove("mob-open");document.getElementById("sb-overlay").classList.remove("on");}
+function timeAgo(ts){const d=Date.now()-ts;if(d<60000)return"az önce";if(d<3600000)return Math.floor(d/60000)+" dk önce";if(d<86400000)return Math.floor(d/3600000)+" saat önce";return new Date(ts).toLocaleDateString("tr-TR");}
+function computeCanvasH(blocks){let max=300;blocks.forEach(b=>{max=Math.max(max,(parseInt(b.top)||0)+(parseInt(b.height)||150)+50);});return max;}
+
+/* ══ RECENT CHANGES ══ */
+function renderRecentChanges(){
+  document.title="Son Değişiklikler — Babane Pedia";setStatus("Son değişiklikler");
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head"><div class="ph-tabs"><span class="ph-tab active">🕐 Son Değişiklikler</span></div><div class="ph-actions"><a onclick="goHome()">Ana Sayfa</a></div></div>
+      <div class="page-body"><div id="rc-list"><div class="empty-state">Yükleniyor…</div></div></div>
+    </div>`;
+  db.ref("articles").once("value",snap=>{
+    const el=document.getElementById("rc-list");if(!el)return;
+    const data=snap.val();if(!data){el.innerHTML=`<div class="empty-state">Henüz sayfa yok.</div>`;return;}
+    const articles=Object.values(data).sort((a,b)=>(b.updatedAt||b.createdAt)-(a.updatedAt||a.createdAt)).slice(0,50);
+    const groups={};
+    articles.forEach(a=>{const d=new Date(a.updatedAt||a.createdAt);const key=d.toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"});if(!groups[key])groups[key]=[];groups[key].push(a);});
+    let html="";
+    Object.entries(groups).forEach(([date,arts])=>{
+      html+=`<div style="margin-bottom:12px;"><div style="font-weight:bold;font-size:10pt;color:#800;border-bottom:1px solid #d9bfb7;padding-bottom:2px;margin-bottom:4px;">📅 ${escHtml(date)}</div>`;
+      arts.forEach(a=>{
+        const t=new Date(a.updatedAt||a.createdAt).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"});
+        const cats=(a.categories||[]).map(c=>`<span class="cat-badge" onclick="navigate('category/${encodeURIComponent(c)}')">${escHtml(c)}</span>`).join("");
+        const authorLink=a.author?`<a onclick="navigate('user/${a.author}')" style="color:#117743;text-decoration:none;">✍️ ${escHtml(a.author)}</a>`:"";
+        html+=`<div class="rc-item"><span style="color:#888;font-size:8pt;margin-right:6px;">${t}</span><a onclick="navigate('article/${a.slug}')">${escHtml(a.title)}</a> ${authorLink} <a onclick="navigate('history/${a.slug}')" style="font-size:8pt;color:#888;">[geçmiş]</a>${cats?` ${cats}`:""}</div>`;
+      });
+      html+="</div>";
+    });
+    el.innerHTML=html||`<div class="empty-state">Henüz sayfa yok.</div>`;
+  });
+}
+
+/* ══ CATEGORIES ══ */
+function renderCategories(){
+  document.title="Kategoriler — Babane Pedia";setStatus("Kategoriler");
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head"><div class="ph-tabs"><span class="ph-tab active">🏷️ Kategoriler</span></div><div class="ph-actions"><a onclick="goHome()">Ana Sayfa</a></div></div>
+      <div class="page-body"><div id="cat-list"><div class="empty-state">Yükleniyor…</div></div></div>
+    </div>`;
+  db.ref("articles").once("value",snap=>{
+    const el=document.getElementById("cat-list");if(!el)return;
+    const data=snap.val();if(!data){el.innerHTML=`<div class="empty-state">Henüz kategori yok.</div>`;return;}
+    const catMap={};Object.values(data).forEach(a=>{(a.categories||[]).forEach(c=>{if(!catMap[c])catMap[c]=0;catMap[c]++;});});
+    const cats=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+    if(!cats.length){el.innerHTML=`<div class="empty-state">Henüz kategori yok.</div>`;return;}
+    el.innerHTML=`<p style="font-size:9pt;color:#800;margin-bottom:8px;">Toplam ${cats.length} kategori:</p><div style="display:flex;flex-wrap:wrap;gap:4px;">${cats.map(([c,n])=>`<span class="cat-badge" onclick="navigate('category/${encodeURIComponent(c)}')" style="font-size:9pt;padding:2px 10px;">🏷️ ${escHtml(c)} <span style="color:#a98;">(${n})</span></span>`).join("")}</div>`;
+  });
+}
+function renderCategory(catName){
+  document.title=catName+" — Babane Pedia";setStatus("Kategori: "+catName);
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head"><div class="ph-tabs"><span class="ph-tab" onclick="navigate('categories')">🏷️ Kategoriler</span><span class="ph-tab active">📁 ${escHtml(catName)}</span></div><div class="ph-actions"><a onclick="goHome()">Ana Sayfa</a></div></div>
+      <div class="page-body"><div id="cat-articles"><div class="empty-state">Yükleniyor…</div></div></div>
+    </div>`;
+  db.ref("articles").once("value",snap=>{
+    const el=document.getElementById("cat-articles");if(!el)return;
+    const data=snap.val();if(!data){el.innerHTML=`<div class="empty-state">Sonuç bulunamadı.</div>`;return;}
+    const arts=Object.values(data).filter(a=>(a.categories||[]).includes(catName)).sort((a,b)=>a.title.localeCompare(b.title,"tr"));
+    if(!arts.length){el.innerHTML=`<div class="empty-state">"${escHtml(catName)}" kategorisinde sayfa yok.</div>`;return;}
+    el.innerHTML=`<p style="font-size:9pt;color:#800;margin-bottom:8px;">${arts.length} sayfa:</p>${arts.map(a=>`<div class="acard"><div class="acard-title"><a onclick="navigate('article/${a.slug}')">${escHtml(a.title)}</a></div><div class="acard-meta">📍 ${escHtml(a.location||"—")} &bull; ${new Date(a.createdAt).toLocaleDateString("tr-TR")} &bull; ✍️ ${escHtml(a.author||"Anonim")}</div></div>`).join("")}`;
+  });
+}
+
+/* ══ SPECIAL PAGES ══ */
+function renderSpecialPages(){
+  document.title="Özel Sayfalar — Babane Pedia";setStatus("Özel Sayfalar");
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head"><div class="ph-tabs"><span class="ph-tab active">🔧 Özel Sayfalar</span></div><div class="ph-actions"><a onclick="goHome()">Ana Sayfa</a></div></div>
+      <div class="page-body">
+        <div class="sp-section"><h3>📋 İçerik</h3><div style="display:flex;flex-wrap:wrap;gap:4px;"><a class="cat-badge" onclick="navigate('recent')">🕐 Son Değişiklikler</a><a class="cat-badge" onclick="navigate('categories')">🏷️ Kategoriler</a><a class="cat-badge" onclick="navigate('wanted')">❓ İstenen Sayfalar</a><a class="cat-badge" onclick="navigate('gallery')">🖼️ Katalog</a></div></div>
+        <div class="sp-section"><h3>📊 İstatistikler</h3><div id="sp-stats"><div class="empty-state">Yükleniyor…</div></div></div>
+        <div class="sp-section"><h3>👤 Kullanıcı</h3><div style="display:flex;flex-wrap:wrap;gap:4px;">${isLoggedIn()?`<a class="cat-badge" onclick="navigate('user/${currentUser.username}')">👤 Kullanıcı Sayfam</a><a class="cat-badge" onclick="navigate('contributions/${currentUser.username}')">📝 Katkılarım</a>`:""}<a class="cat-badge" onclick="toggleUserMenu()">${isLoggedIn()?"🚪 Çıkış":"🔑 Giriş Yap"}</a></div></div>
+        ${isAdmin()?`<div class="sp-section"><h3>⚙️ Yönetim</h3><div style="display:flex;flex-wrap:wrap;gap:4px;"><a class="cat-badge" onclick="navigate('admin')">⚙️ Admin Paneli</a><a class="cat-badge" onclick="navigate('templates')">📋 Şablonlar</a><a class="cat-badge" onclick="editHomepage()">🏠 Ana Sayfayı Düzenle</a><a class="cat-badge" onclick="openAnnouncementEditor()">📢 Duyuru</a></div></div>`:""}
+        ${isProko()?`<div class="sp-section"><h3>🛡️ Moderatör</h3><div style="display:flex;flex-wrap:wrap;gap:4px;"><a class="cat-badge" onclick="navigate('modpanel')">🛡️ Mod Panel</a><a class="cat-badge" onclick="navigate('templates')">📋 Şablonlar</a></div></div>`:""}
+      </div>
+    </div>`;
+  Promise.all([db.ref("articles").once("value"),db.ref("users").once("value"),db.ref("images").once("value"),db.ref("discussion").once("value")]).then(([a,u,i,d])=>{
+    const el=document.getElementById("sp-stats");if(!el)return;
+    el.innerHTML=`<table class="wiki-table" style="width:auto;"><tr><td>📄 Toplam Sayfa</td><td><b>${a.val()?Object.keys(a.val()).length:0}</b></td></tr><tr><td>👤 Kayıtlı Kullanıcı</td><td><b>${u.val()?Object.keys(u.val()).length:0}</b></td></tr><tr><td>🖼️ Görsel</td><td><b>${i.val()?Object.keys(i.val()).length:0}</b></td></tr><tr><td>💬 Tartışma</td><td><b>${d.val()?Object.keys(d.val()).length:0}</b></td></tr></table>`;
+  });
+}
+
+/* ══ WANTED PAGES ══ */
+function renderWantedPages(){
+  document.title="İstenen Sayfalar — Babane Pedia";setStatus("İstenen Sayfalar");
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head"><div class="ph-tabs"><span class="ph-tab active">❓ İstenen Sayfalar</span></div><div class="ph-actions">${canModerate()?`<a onclick="openWantedEditor()">+ Ekle</a>`:""}<a onclick="goHome()">Ana Sayfa</a></div></div>
+      <div class="page-body">
+        <div class="notice">Henüz oluşturulmamış ama ihtiyaç duyulan sayfalar.</div>
+        <div id="wanted-list"><div class="empty-state">Yükleniyor…</div></div>
+        ${canModerate()?`<div style="margin-top:10px;"><button class="btn-post" onclick="openWantedEditor()">+ İstenen Sayfa Ekle</button></div>`:""}
+      </div>
+    </div>`;
+  db.ref("wanted").once("value",snap=>{
+    const el=document.getElementById("wanted-list");if(!el)return;
+    const data=snap.val();if(!data){el.innerHTML=`<div class="empty-state">Liste boş.</div>`;return;}
+    const items=Object.entries(data).sort((a,b)=>(b[1].votes||0)-(a[1].votes||0));
+    el.innerHTML=items.map(([key,item])=>`
+      <div class="acard" style="display:flex;align-items:center;gap:8px;">
+        <div style="text-align:center;min-width:32px;background:#f0e0d6;border:1px solid #d9bfb7;padding:2px 4px;font-size:9pt;"><div style="font-weight:bold;color:#d00;">${item.votes||0}</div><div style="font-size:7pt;color:#888;">oy</div></div>
+        <div style="flex:1;"><div class="acard-title"><a onclick="navigate('editor');setTimeout(()=>{const t=document.getElementById('ed-title');if(t)t.value='${escHtml(item.title)}'},300)">${escHtml(item.title)}</a></div>${item.desc?`<div class="acard-meta">${escHtml(item.desc)}</div>`:""}</div>
+        <div style="display:flex;gap:4px;">
+          <button onclick="voteWanted('${key}')" class="btn-cancel" style="font-size:8pt;padding:2px 6px;">👍 Oy</button>
+          ${canModerate()?`<button onclick="removeWanted('${key}')" class="btn-reject" style="font-size:8pt;padding:2px 6px;">🗑️</button>`:""}
+        </div>
+      </div>`).join("");
+  });
+}
+function openWantedEditor(){
+  document.getElementById("modal-title").textContent="❓ İstenen Sayfa Ekle";
+  document.getElementById("modal-footer").style.display="flex";
+  document.getElementById("modal-ok").textContent="Ekle";
+  document.getElementById("modal-body").innerHTML=`<label>Sayfa Başlığı:</label><input type="text" id="wanted-title" placeholder="Örn: Soyjaklar Tarihi"><label>Açıklama (opsiyonel):</label><input type="text" id="wanted-desc" placeholder="Neden bu sayfaya ihtiyaç var?">`;
+  window._tplModalCb=()=>{const title=(document.getElementById("wanted-title").value||"").trim();if(!title){alert("Başlık gerekli.");return false;}const key="wanted_"+Date.now();db.ref("wanted/"+key).set({title,desc:document.getElementById("wanted-desc").value||"",votes:0,addedBy:currentUser?currentUser.username:"Anonim",addedAt:Date.now()},()=>{setStatus("Eklendi!");renderWantedPages();});return true;};
+  document.getElementById("modal-overlay").style.display="flex";
+  setTimeout(()=>{const t=document.getElementById("wanted-title");if(t)t.focus();},50);
+}
+function voteWanted(key){db.ref("wanted/"+key+"/votes").transaction(v=>(v||0)+1,()=>renderWantedPages());}
+function removeWanted(key){showConfirmModal("Kaldır?",()=>{db.ref("wanted/"+key).remove(()=>renderWantedPages());});}
+
+/* ══ CONTRIBUTIONS ══ */
+function renderContributions(username){
+  document.title=username+" Katkıları — Babane Pedia";setStatus("Katkılar: "+username);
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head">
+        <div class="ph-tabs"><span class="ph-tab" onclick="navigate('user/${username}')">👤 User:${escHtml(username)}</span><span class="ph-tab active">📝 Katkılar</span></div>
+        <div class="ph-actions"><a onclick="goHome()">Ana Sayfa</a></div>
+      </div>
+      <div class="page-body"><div id="contrib-list"><div class="empty-state">Yükleniyor…</div></div></div>
+    </div>`;
+  db.ref("articles").once("value",snap=>{
+    const el=document.getElementById("contrib-list");if(!el)return;
+    const data=snap.val();if(!data){el.innerHTML=`<div class="empty-state">Katkı bulunamadı.</div>`;return;}
+    const arts=Object.values(data).filter(a=>a.author===username).sort((a,b)=>(b.updatedAt||b.createdAt)-(a.updatedAt||a.createdAt));
+    if(!arts.length){el.innerHTML=`<div class="empty-state">${escHtml(username)} henüz katkıda bulunmamış.</div>`;return;}
+    el.innerHTML=`<p style="font-size:9pt;color:#800;margin-bottom:8px;">Toplam ${arts.length} sayfa:</p>${arts.map(a=>`<div class="contrib-item"><a onclick="navigate('article/${a.slug}')">${escHtml(a.title)}</a> <span style="color:#888;font-size:8pt;">${timeAgo(a.updatedAt||a.createdAt)}</span></div>`).join("")}`;
+  });
+}
+
+/* ══ REVISION HISTORY ══ */
+function renderHistory(slug){
+  document.title="Geçmiş — Babane Pedia";setStatus("Geçmiş: "+slug);
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head">
+        <div class="ph-tabs"><span class="ph-tab" onclick="navigate('article/${slug}')">📄 Sayfa</span><span class="ph-tab active">📜 Geçmiş</span></div>
+        <div class="ph-actions"><a onclick="navigate('article/${slug}')">Sayfaya Dön</a></div>
+      </div>
+      <div class="page-body"><div id="history-list"><div class="empty-state">Yükleniyor…</div></div></div>
+    </div>`;
+  db.ref("revisions/"+slug).once("value",snap=>{
+    const el=document.getElementById("history-list");if(!el)return;
+    const data=snap.val();if(!data){el.innerHTML=`<div class="empty-state">Revizyon geçmişi yok.</div>`;return;}
+    const revs=Object.entries(data).sort((a,b)=>b[1].savedAt-a[1].savedAt);
+    el.innerHTML=`<p style="font-size:9pt;color:#800;margin-bottom:6px;">${revs.length} revizyon:</p>`+revs.map(([key,rev])=>`<div class="rev-item"><span class="rev-time">${new Date(rev.savedAt).toLocaleString("tr-TR")}</span><span class="rev-author">✍️ ${escHtml(rev.author||"Anonim")}</span>${canModerate()?`<a class="rev-restore" onclick="restoreRevision('${slug}','${key}')">↩ Geri Al</a>`:""}</div>`).join("");
+  });
+}
+function saveRevision(slug,data){db.ref("revisions/"+slug+"/rev_"+Date.now()).set({...data,savedAt:Date.now()});}
+function restoreRevision(slug,revKey){showConfirmModal("Bu revizyona geri dön?",()=>{db.ref("revisions/"+slug+"/"+revKey).once("value",snap=>{if(!snap.exists())return;db.ref("articles/"+slug).set(snap.val(),()=>{setStatus("Geri alındı!");navigate("article/"+slug);});});});}
+
+/* ══ ANNOUNCEMENT ══ */
+function loadAnnouncement(){
+  db.ref("announcement").once("value",snap=>{
+    const bar=document.getElementById("announce-bar");if(!bar)return;
+    if(snap.exists()&&snap.val().text){bar.innerHTML=snap.val().text+(isAdmin()?` <a onclick="openAnnouncementEditor()" style="margin-left:8px;">[düzenle]</a>`:"");bar.classList.add("on");}
+    else bar.classList.remove("on");
+  });
+}
+function openAnnouncementEditor(){
+  db.ref("announcement").once("value",snap=>{
+    const cur=snap.val()?snap.val().text:"";
+    document.getElementById("modal-title").textContent="📢 Duyuru Düzenle";
+    document.getElementById("modal-footer").style.display="flex";
+    document.getElementById("modal-ok").textContent="Kaydet";
+    document.getElementById("modal-body").innerHTML=`<label>Duyuru metni (boş bırakırsan kaldırılır):</label><input type="text" id="announce-text" value="${escHtml(cur)}" placeholder="Duyuru metni…"><p style="font-size:8pt;color:#888;">HTML kullanabilirsiniz.</p>`;
+    window._tplModalCb=()=>{const text=(document.getElementById("announce-text").value||"").trim();db.ref("announcement").set({text,updatedAt:Date.now()},()=>{setStatus("Duyuru güncellendi.");loadAnnouncement();});return true;};
+    document.getElementById("modal-overlay").style.display="flex";
+    setTimeout(()=>{const t=document.getElementById("announce-text");if(t){t.focus();t.select();}},50);
+  });
+}
+
+/* ══ DISCUSSION ══ */
+function renderDiscussion(slug){
+  document.title="Tartışma — Babane Pedia";setStatus("Tartışma: "+slug);
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head">
+        <div class="ph-tabs"><span class="ph-tab" onclick="navigate('article/${slug}')">📄 Sayfa</span><span class="ph-tab active">💬 Tartışma</span><span class="ph-tab" onclick="navigate('history/${slug}')">📜 Geçmiş</span></div>
+        <div class="ph-actions"><a onclick="navigate('article/${slug}')">Sayfaya Dön</a></div>
+      </div>
+      <div class="page-body">
+        <div class="disc-new-thread">
+          <div style="font-weight:bold;font-size:9pt;color:#800;margin-bottom:6px;">💬 Yeni Konu</div>
+          <input type="text" id="disc-new-topic" placeholder="Konu başlığı…">
+          <textarea id="disc-new-text" placeholder="Mesajınızı yazın…"></textarea>
+          <button class="btn-post" onclick="postNewThread('${slug}')" style="font-size:9pt;padding:3px 12px;">Gönder</button>
+          <span style="font-size:8pt;color:#888;margin-left:8px;">${isLoggedIn()?escHtml(currentUser.username):"Anonim"}</span>
+        </div>
+        <div id="disc-list"><div class="empty-state">Yükleniyor…</div></div>
+      </div>
+    </div>`;
+  loadDiscussion(slug);
+}
+function loadDiscussion(slug){
+  db.ref("discussion/"+slug).once("value",snap=>{
+    const el=document.getElementById("disc-list");if(!el)return;
+    const data=snap.val();if(!data){el.innerHTML=`<div class="empty-state">Henüz tartışma yok.</div>`;return;}
+    const threads=Object.entries(data).sort((a,b)=>b[1].createdAt-a[1].createdAt);
+    el.innerHTML=threads.map(([threadKey,thread])=>{
+      const replies=thread.replies?Object.entries(thread.replies).sort((a,b)=>a[1].createdAt-b[1].createdAt):[];
+      return`<div class="disc-thread">
+        <div class="disc-thread-head"><span>💬</span><span style="flex:1;">${escHtml(thread.topic||"Konu")}</span><span style="font-size:8pt;font-weight:normal;color:#a98;">${timeAgo(thread.createdAt)} — <a onclick="navigate('user/${thread.author||''}')" style="color:#a98;text-decoration:none;">${escHtml(thread.author||"Anonim")}</a></span></div>
+        ${replies.map(([rKey,reply])=>`<div class="disc-reply"><div class="disc-meta">✍️ <b><a onclick="navigate('user/${reply.author||''}')" style="color:#117743;text-decoration:none;">${escHtml(reply.author||"Anonim")}</a></b> &bull; ${timeAgo(reply.createdAt)}</div><div class="disc-content">${escHtml(reply.text||"")}</div><div class="disc-actions"><a onclick="openReplyForm('${slug}','${threadKey}')">↩ Yanıtla</a>${canModerate()?`<a onclick="deleteDiscReply('${slug}','${threadKey}','${rKey}')" style="color:#d00;">🗑️</a>`:""}</div></div>`).join("")}
+        <div id="reply-form-${threadKey}" style="display:none;padding:6px 10px;border-top:1px solid #e8d0c0;background:#f9f0e8;">
+          <textarea id="reply-text-${threadKey}" placeholder="Yanıtınızı yazın…" style="width:100%;border:1px solid #a9a9a9;padding:5px;font-size:9pt;font-family:arial;resize:vertical;min-height:50px;outline:none;background:#fff;color:#333;margin-bottom:5px;"></textarea>
+          <button class="btn-post" onclick="postReply('${slug}','${threadKey}')" style="font-size:9pt;padding:2px 10px;">Gönder</button>
+          <button class="btn-cancel" onclick="closeReplyForm('${threadKey}')" style="font-size:9pt;padding:2px 8px;">İptal</button>
+        </div>
+      </div>`;
+    }).join("");
+  });
+}
+function postNewThread(slug){const topic=(document.getElementById("disc-new-topic").value||"").trim();const text=(document.getElementById("disc-new-text").value||"").trim();if(!text){alert("Mesaj yazın.");return;}const author=isLoggedIn()?currentUser.username:"Anonim";db.ref("discussion/"+slug+"/thread_"+Date.now()).set({topic:topic||"Konu",author,createdAt:Date.now(),replies:{["r_"+Date.now()]:{author,text,createdAt:Date.now()}}},()=>{document.getElementById("disc-new-topic").value="";document.getElementById("disc-new-text").value="";setStatus("Konu açıldı!");loadDiscussion(slug);});}
+function openReplyForm(slug,threadKey){document.querySelectorAll("[id^='reply-form-']").forEach(el=>el.style.display="none");const form=document.getElementById("reply-form-"+threadKey);if(form){form.style.display="block";const ta=document.getElementById("reply-text-"+threadKey);if(ta)ta.focus();}}
+function closeReplyForm(threadKey){const form=document.getElementById("reply-form-"+threadKey);if(form)form.style.display="none";}
+function postReply(slug,threadKey){const text=(document.getElementById("reply-text-"+threadKey).value||"").trim();if(!text){alert("Yanıt yazın.");return;}const author=isLoggedIn()?currentUser.username:"Anonim";db.ref("discussion/"+slug+"/"+threadKey+"/replies/r_"+Date.now()).set({author,text,createdAt:Date.now()},()=>{closeReplyForm(threadKey);setStatus("Yanıt gönderildi!");loadDiscussion(slug);});}
+function deleteDiscReply(slug,threadKey,rKey){showConfirmModal("Yanıtı sil?",()=>{db.ref("discussion/"+slug+"/"+threadKey+"/replies/"+rKey).remove(()=>loadDiscussion(slug));});}
+
+/* ══ RATING ══ */
+function renderRating(slug,container){
+  db.ref("ratings/"+slug).once("value",snap=>{
+    const data=snap.val()||{};const votes=Object.values(data);const avg=votes.length?votes.reduce((a,b)=>a+b,0)/votes.length:0;const myVote=data[currentUser?currentUser.username:"anon"]||0;
+    container.innerHTML=`<div class="rating-wrap"><span style="font-size:9pt;color:#800;">Puanla:</span><div class="rating-stars" id="stars-${slug}">${[1,2,3,4,5].map(i=>`<span class="rating-star ${myVote>=i?'filled':''}" data-v="${i}" onclick="rateArticle('${slug}',${i})" onmouseover="hoverStars('${slug}',${i})" onmouseout="unhoverStars('${slug}')">★</span>`).join("")}</div><span style="font-size:8pt;color:#888;">${avg?avg.toFixed(1)+" ("+votes.length+" oy)":"Henüz oy yok"}</span></div>`;
+  });
+}
+function hoverStars(slug,v){document.querySelectorAll(`#stars-${slug} .rating-star`).forEach(s=>{s.classList.toggle("hover",parseInt(s.dataset.v)<=v);});}
+function unhoverStars(slug){document.querySelectorAll(`#stars-${slug} .rating-star`).forEach(s=>s.classList.remove("hover"));}
+function rateArticle(slug,v){const key=isLoggedIn()?currentUser.username:"anon";db.ref("ratings/"+slug+"/"+key).set(v,()=>{const c=document.getElementById("rating-container-"+slug);if(c)renderRating(slug,c);setStatus("Puan: "+v+"/5");});}
+
+/* ══ TEMPLATE ENGINE ══ */
+function renderTemplate(html,args){return html.replace(/\{\{\{([^}|]+)(?:\|([^}]*))?\}\}\}/g,(m,name,def)=>{name=name.trim();if(args&&args[name]!==undefined&&args[name]!=="")return args[name];return def!==undefined?def:"";});}
+function convertWikiTable(text){return text.replace(/\{\|([^\n]*)\n([\s\S]*?)\n?\|\}/g,function(match,attrs,body){let html=`<table ${attrs.trim()}>`;const rowParts=('\n'+body).split(/\n\s*\|-[^\n]*/);rowParts.forEach(function(rc){if(!rc.trim())return;const lines=rc.split('\n');const cells=[];lines.forEach(function(line){line=line.trimEnd();if(!line)return;if(line.charAt(0)==='!'&&line.charAt(1)!=='!'){line.slice(1).split('!!').forEach(c=>cells.push({c:c.trim(),h:true}));}else if(line.charAt(0)==='|'&&line.charAt(1)!=='}'&&line.charAt(1)!=='|'&&line.charAt(1)!=='+'){line.slice(1).split('||').forEach(c=>cells.push({c:c.trim(),h:false}));}});if(cells.length){html+='<tr>';cells.forEach(cell=>{const tag=cell.h?'th':'td';const pi=cell.c.indexOf('|');let att='',txt=cell.c;if(pi>-1){const before=cell.c.slice(0,pi);if(!/<|{/.test(before)&&/style=|colspan=|rowspan=|align=|width=|background|padding|color|font/.test(before)){att=before.trim();txt=cell.c.slice(pi+1).trim();}}html+=`<${tag} ${att}>${txt}</${tag}>`;});html+='</tr>';}});return html+'</table>';});}
+function processWikiMarkup(html){
+  if(!html)return html;
+  html=html.replace(/<includeonly>([\s\S]*?)<\/includeonly>/gi,'$1');
+  html=html.replace(/<noinclude>[\s\S]*?<\/noinclude>/gi,'');
+  html=convertWikiTable(html);
+  html=html.replace(/\[\[(?:File|Dosya|Image|Resim):([^\]|]+)(?:\|([^\]]*))?\]\]/gi,function(m,filename,params){filename=filename.trim();let width='180';let floatStyle='';if(params){const sm=params.match(/(\d+)px/);if(sm)width=sm[1];if(/\bright\b/i.test(params))floatStyle='float:right;margin:0 0 8px 12px;';else if(/\bleft\b/i.test(params))floatStyle='float:left;margin:0 12px 8px 0;';}const cu=getCachedImageUrl(filename);if(cu)return`<img src="${escHtml(cu)}" alt="${escHtml(filename)}" style="width:${width}px;max-width:100%;height:auto;border:1px solid #d9bfb7;${floatStyle}" loading="lazy">`;return`<span style="display:inline-flex;align-items:center;gap:4px;background:#f0e0d6;border:1px dashed #d9bfb7;padding:2px 6px;font-size:8pt;color:#a98;">📷 ${escHtml(filename)}</span>`;});
+  html=html.replace(/\[\[([^\]|#\n]+)(?:\|([^\]\n]*))?\]\]/g,function(m,target,text){const sl=slugify(target.trim());const label=text?text.trim():target.trim();return`<a href="#article/${sl}" onclick="event.preventDefault();navigate('article/${sl}')">${escHtml(label)}</a>`;});
+  html=html.replace(/'''([\s\S]*?)'''/g,'<b>$1</b>');
+  html=html.replace(/''([\s\S]*?)''/g,'<i>$1</i>');
+  return html;
+}
+async function loadAllTemplates(){return new Promise(resolve=>{db.ref("templates").once("value",snap=>{const stored=snap.val()?Object.values(snap.val()):[];const map={};BUILTIN_TEMPLATES.forEach(t=>map[t.slug]=t);stored.forEach(t=>map[t.slug]=t);resolve(Object.values(map));});});}
+function seedTemplates(){db.ref("templates").once("value",snap=>{BUILTIN_TEMPLATES.forEach(tpl=>{if(!snap.child(tpl.slug).exists())db.ref("templates/"+tpl.slug).set(tpl);});});}
+function extractTemplateVars(html){const vars=[];const rx=/\{\{\{([^}|]+)(?:\|([^}]*))?\}\}\}/g;let m;while((m=rx.exec(html))!==null){const name=m[1].trim(),def=m[2]||"";if(!vars.find(v=>v.name===name))vars.push({name,def});}return vars;}
+
+/* ══ HOME ══ */
+function renderHome(){
+  document.title="Ana Sayfa — Babane Pedia";setStatus("Ana sayfa");
+  const mc=document.getElementById("main-content");mc.innerHTML=`<div class="empty-state">Yükleniyor…</div>`;
+  Promise.all([db.ref("homepage").once("value"),loadAllTemplates(),preloadFirebaseImages(),db.ref("articles").once("value")]).then(([snap,templates,_,artSnap])=>{
+    const hp=snap.val();
+    const adminActions=isAdmin()?`<a onclick="editHomepage()">✏️ Ana Sayfayı Düzenle</a>`:"";
+    const arts=artSnap.val()?Object.values(artSnap.val()):[];
+    const recentArts=arts.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
+    const dykHtml=recentArts.length?`<div class="dyk-box"><strong>💡 Biliyor muydunuz?</strong><br>${recentArts.map(a=>`• <a onclick="navigate('article/${a.slug}')">${escHtml(a.title)}</a> sayfası eklendi.`).join("<br>")}</div>`:"";
+    if(!hp||!(hp.blocks&&hp.blocks.length)){mc.innerHTML=`<div class="page-wrap"><div class="page-head"><div class="ph-tabs"><span class="ph-tab active">🏠 Ana Sayfa</span></div><div class="ph-actions">${adminActions}</div></div><div class="page-body">${dykHtml}<div class="notice">🌏 <b>Babane Pedia</b>'ya hoş geldiniz.</div>${isAdmin()?`<div style="text-align:center;padding:30px;"><button class="btn-post" onclick="editHomepage()">✏️ Ana Sayfayı Düzenle</button></div>`:`<div class="empty-state">Ana sayfa henüz düzenlenmemiş.</div>`}</div></div>`;return;}
+    const ch=computeCanvasH(hp.blocks||[]);
+    const bHtml=(hp.blocks||[]).map(b=>{const w=b.width?`width:${b.width};`:"",h=b.height?`height:${b.height};`:"";if(b.type==="text")return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}">${renderTemplateTags(b.content,templates)}</div>`;if(b.type==="template")return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}">${renderTemplateTags(b.tplTag||b.content,templates)}</div>`;return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}"><img src="${escHtml(b.content)}" alt=""></div>`;}).join("");
+    mc.innerHTML=`<div class="page-wrap"><div class="page-head"><div class="ph-tabs"><span class="ph-tab active">🏠 Ana Sayfa</span></div><div class="ph-actions">${adminActions}</div></div><div class="page-body">${dykHtml}<div class="viewer-canvas" style="min-height:${ch}px;">${bHtml}</div></div></div>`;
+  });
+}
+function editHomepage(){if(!isAdmin()){alert("Sadece admin düzenleyebilir.");return;}navigate("editor/__homepage__");}
+
+/* ══ ARTICLE VIEW ══ */
+async function loadArticle(slug){
+  if(slug==="__homepage__"){navigate("editor/__homepage__");return;}
+  setStatus("Yükleniyor…");
+  const [snap,templates]=await Promise.all([db.ref("articles/"+slug).once("value"),loadAllTemplates(),preloadFirebaseImages()]);
+  if(!snap.exists()){
+    document.getElementById("main-content").innerHTML=`<div class="page-wrap"><div class="page-body"><div class="notice warn">⚠️ Bu sayfa mevcut değil.</div><button class="btn-post" onclick="navigate('editor');setTimeout(()=>{const t=document.getElementById('ed-title');if(t)t.value=decodeURIComponent('${slug}'.replace(/-/g,' '))},300)">✏️ Bu Sayfayı Oluştur</button> <button class="btn-cancel" onclick="goHome()">Ana Sayfa</button></div></div>`;
+    setStatus("404");return;
+  }
+  const a=snap.val();
+  document.title=a.title+" — Babane Pedia";setStatus("Yüklendi: "+a.title);
+  const ch=computeCanvasH(a.blocks||[]);
+  const bHtml=(a.blocks||[]).map(b=>{const w=b.width?`width:${b.width};`:"",h=b.height?`height:${b.height};`:"";if(b.type==="template")return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}">${renderTemplateTags(b.tplTag||b.content,templates)}</div>`;if(b.type==="text")return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}">${renderTemplateTags(b.content,templates)}</div>`;return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}"><img src="${escHtml(b.content)}" alt=""></div>`;}).join("");
+  const catHtml=(a.categories&&a.categories.length)?`<div style="margin-top:8px;border-top:1px solid #e8d0c0;padding-top:6px;font-size:9pt;"><span style="color:#800;font-weight:bold;">🏷️</span> ${a.categories.map(c=>`<span class="cat-badge" onclick="navigate('category/${encodeURIComponent(c)}')">${escHtml(c)}</span>`).join(" ")}</div>`:"";
+  const watchingNow=isWatching(slug);
+  /* If this is a user page, show user info header */
+  const isUserPage=slug.startsWith("user-");
+  const userInfoHtml=isUserPage?buildUserInfoHtml(slug.slice(5)):"";
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head">
+        <div class="ph-tabs">
+          <span class="ph-tab active">📄 ${escHtml(a.title)}</span>
+          <span class="ph-tab" onclick="navigate('discussion/${slug}')">💬 Tartışma</span>
+          <span class="ph-tab" onclick="navigate('history/${slug}')">📜 Geçmiş</span>
+          <span class="ph-tab" onclick="navigate('editor/${slug}')">✏️ Düzenle</span>
+        </div>
+        <div class="ph-actions">
+          <button class="watch-btn ${watchingNow?"watching":""}" id="watch-btn-${slug}" onclick="handleWatch('${slug}')">${watchingNow?"★ Takipte":"☆ Takip Et"}</button>
+          <a onclick="navigate('editor/${slug}')">✏️ Düzenle</a>
+          <a class="red" onclick="deleteArticle('${slug}')">🗑️ Sil</a>
+        </div>
+      </div>
+      <div class="page-body">
+        <div id="up-info-${slug}"></div>
+        <div class="art-title">${escHtml(a.title)}</div>
+        <div class="art-meta">
+          <span>📍 ${escHtml(a.location||"—")}</span>
+          <span>📅 ${new Date(a.createdAt).toLocaleString("tr-TR")}</span>
+          ${a.author?`<span>✍️ <a onclick="navigate('user/${a.author}')" style="color:#117743;text-decoration:none;">${escHtml(a.author)}</a></span>`:""}
+          <span style="color:#888;font-size:8pt;">${timeAgo(a.updatedAt||a.createdAt)}</span>
+        </div>
+        <div class="viewer-canvas" style="min-height:${ch}px;">${bHtml}</div>
+        ${catHtml}
+        <div id="rating-container-${slug}" style="margin-top:8px;border-top:1px solid #e8d0c0;padding-top:6px;"></div>
+        <div style="margin-top:6px;border-top:1px solid #e8d0c0;padding-top:6px;font-size:9pt;">
+          <a onclick="navigate('discussion/${slug}')">💬 Tartışma</a> &nbsp;
+          <a onclick="navigate('history/${slug}')">📜 Geçmiş</a> &nbsp;
+          <button class="flag-btn" onclick="flagArticle('${slug}')">🚩 Şikayet</button>
+        </div>
+      </div>
+    </div>`;
+  renderRating(slug,document.getElementById("rating-container-"+slug));
+  if(isUserPage){const infoEl=document.getElementById("up-info-"+slug);if(infoEl)loadUserInfoBox(slug.slice(5),infoEl);}
+}
+function buildUserInfoHtml(username){return"";}/* placeholder, used async below */
+function loadUserInfoBox(username,container){
+  const avatarColor=["#e87020","#a0d","#117743","#0055bb","#800000"][username.charCodeAt(0)%5];
+  db.ref("users/"+username).once("value",snap=>{
+    const d=snap.val()||{};const role=d.role||"user";
+    const roleBadge=role==="admin"?`<span class="admin-badge">⚙️ Admin</span>`:role==="proko"?`<span class="proko-badge">🛡️ Proko</span>`:"";
+    const joinDate=d.createdAt?new Date(d.createdAt).toLocaleDateString("tr-TR"):"?";
+    container.innerHTML=`<div class="user-info-card"><div class="user-avatar" style="background:${avatarColor};">${username.charAt(0).toUpperCase()}</div><div style="flex:1;"><div style="font-size:12pt;font-weight:bold;color:#d00;font-family:tahoma;">${escHtml(username)}${roleBadge}</div><div style="font-size:9pt;color:#117743;">📅 Kayıt: ${escHtml(joinDate)}</div><div style="margin-top:4px;font-size:9pt;"><a onclick="navigate('contributions/${username}')">📝 Katkılar</a></div></div></div>`;
+  });
+}
+function handleWatch(slug){const w=toggleWatch(slug);const btn=document.getElementById("watch-btn-"+slug);if(btn){btn.textContent=w?"★ Takipte":"☆ Takip Et";btn.className="watch-btn"+(w?" watching":"");}}
+function flagArticle(slug){showConfirmModal("Bu sayfayı şikayet et?",()=>{db.ref("flags/"+slug+"_"+Date.now()).set({slug,by:isLoggedIn()?currentUser.username:"Anonim",at:Date.now()});setStatus("Şikayet gönderildi.");});}
+function deleteArticle(slug){if(!canModerate()){showConfirmModal("Silme isteği gönder?",()=>{db.ref("delete_requests/"+slug).set({by:currentUser?currentUser.username:"Anonim",at:Date.now()});setStatus("Silme isteği gönderildi.");});return;}showConfirmModal("Bu sayfayı sil?",()=>{db.ref("articles/"+slug).remove(()=>goHome());});}
+
+/* ══ RENDER TEMPLATE TAGS ══ */
+function renderTemplateTags(html,templates){
+  if(!html)return"";
+  html=processWikiMarkup(html);
+  return html.replace(/\{\{(\{)?([^}|#]+?)(\|[^}]*)?\}\}\}?/g,(match,triple,name,argsStr)=>{
+    name=(triple?name:(name||"")).trim();const tpl=templates.find(t=>t.name===name||t.slug===slugify(name));if(!tpl)return match;
+    const args={};if(argsStr){const parts=argsStr.slice(1).split("|");parts.forEach((p,i)=>{const eq=p.indexOf("=");if(eq>0){args[p.slice(0,eq).trim()]=p.slice(eq+1);}else{args[i+1]=p;args[i]=p;}});}
+    let rendered=renderTemplate(tpl.html,args);if(!triple)rendered=processWikiMarkup(rendered);return`<span class="tpl-render">${rendered}</span>`;
+  });
+}
+
+/* ══ TEMPLATES PAGE ══ */
+async function renderTemplates(){
+  document.title="Şablonlar — Babane Pedia";setStatus("Şablonlar");
+  const templates=await loadAllTemplates();const isAdm=isAdmin();
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head"><div class="ph-tabs"><span class="ph-tab active">📋 Şablonlar</span></div><div class="ph-actions">${isAdm?`<a onclick="openTemplateEditor(null)" class="tpl-new-btn" style="background:#4a7d44;border:1px solid #3a6234;padding:1px 9px;color:#fff;font-weight:bold;text-decoration:none;">+ Yeni</a>`:""}<a onclick="goHome()">Ana Sayfa</a></div></div>
+      <div class="page-body">
+        <div class="notice">Kullanım: <code style="background:#f0e0d6;padding:1px 4px;border:1px solid #d9bfb7;">{{ŞablonAdı|parametre=değer}}</code></div>
+        <div id="tpl-list">${renderTplCards(templates,isAdm)}</div>
+      </div>
+    </div>`;
+}
+function renderTplCards(templates,isAdm){
+  if(!templates.length)return`<div class="empty-state">Henüz şablon yok.</div>`;
+  return templates.map(t=>`
+    <div class="tpl-card">
+      <div style="flex:1;">
+        <h4>📋 ${escHtml(t.name)} <span style="font-size:8pt;font-weight:normal;font-family:monospace;">{{${escHtml(t.name)}}}</span></h4>
+        <div class="tpl-desc">${escHtml(t.desc||"")}</div>
+        <div style="margin-top:6px;background:#fffef0;border:1px solid #e8d0c0;padding:6px;overflow:auto;max-height:80px;font-size:85%;">${processWikiMarkup(renderTemplate(t.html,{}))}</div>
+      </div>
+      <div class="tpl-acts">
+        <button class="btn-tpl ins" onclick="previewTemplate('${t.slug}')">👁 Önizle</button>
+        ${isAdm?`<button class="btn-tpl" onclick="openTemplateEditor('${t.slug}')">✏️ Düzenle</button><button class="btn-tpl del" onclick="deleteTemplate('${t.slug}')">🗑️ Sil</button>`:""}
+      </div>
+    </div>`).join("");
+}
+async function reloadTplList(){const t=await loadAllTemplates();const el=document.getElementById("tpl-list");if(el)el.innerHTML=renderTplCards(t,isAdmin());}
+
+/* ══ TEMPLATE EDITOR MODAL ══ */
+function openTemplateEditor(slug){
+  const isNew=!slug;
+  document.getElementById("modal-title").textContent=isNew?"➕ Yeni Şablon":"✏️ Şablon Düzenle";
+  document.getElementById("modal-footer").style.display="flex";
+  document.getElementById("modal-ok").textContent=isNew?"Oluştur":"Kaydet";
+  document.getElementById("modal-cancel").textContent="İptal";
+  document.getElementById("modal-body").innerHTML=`
+    <label>Şablon Adı:</label><input type="text" id="tpl-name" placeholder="ör: Uyarı Kutusu" ${!isNew?"readonly":""}>
+    <label>Açıklama:</label><input type="text" id="tpl-desc" placeholder="Kısa açıklama…">
+    <label>HTML Kodu:</label>
+    <div class="code-editor-wrap"><textarea id="tpl-html" rows="10" style="font-family:'Courier New',monospace;font-size:9pt;resize:vertical;background:#1e1e1e;color:#d4d4d4;border:1px solid #555;padding:8px;line-height:1.5;width:100%;outline:none;" spellcheck="false"></textarea></div>
+    <div style="display:flex;gap:6px;margin-top:6px;">
+      <button onclick="previewTemplateHtml()" style="padding:2px 10px;background:#f0e0d6;border:1px solid #d9bfb7;cursor:pointer;font-size:9pt;">👁 Önizle</button>
+      <button onclick="copyTplCode()" style="padding:2px 10px;background:#fff0e0;border:1px solid #e8c890;cursor:pointer;font-size:9pt;">📋 Kopyala</button>
+    </div>
+    <div id="tpl-prev-box" style="display:none;border:1px solid #d9bfb7;padding:8px;background:#fffef0;margin-top:8px;overflow:auto;"></div>`;
+  document.getElementById("modal-overlay").style.display="flex";
+  if(!isNew){db.ref("templates/"+slug).once("value",snap=>{if(!snap.exists())return;const t=snap.val();document.getElementById("tpl-name").value=t.name||"";document.getElementById("tpl-desc").value=t.desc||"";document.getElementById("tpl-html").value=t.html||"";});}
+  window._tplModalCb=()=>{
+    const nameEl=document.getElementById("tpl-name"),descEl=document.getElementById("tpl-desc"),htmlEl=document.getElementById("tpl-html");
+    const name=nameEl.value.trim(),desc=descEl.value.trim(),html=htmlEl.value.trim();
+    if(!name){alert("Şablon adı gerekli.");nameEl.focus();return false;}
+    if(!html){alert("HTML kodu gerekli.");htmlEl.focus();return false;}
+    let key=slug||slugify(name);if(!key)key="tpl-"+Date.now();
+    db.ref("templates/"+key).set({name,slug:key,desc,html},err=>{if(err){alert("Hata: "+err.message);return;}setStatus("Kaydedildi: "+name);reloadTplList();refreshEditorTplPanel();});
+    return true;
+  };
+  setTimeout(()=>{const n=document.getElementById(isNew?"tpl-name":"tpl-html");if(n)n.focus();},60);
+}
+function copyTplCode(){const el=document.getElementById("tpl-html");if(!el)return;el.select();try{document.execCommand("copy");setStatus("Kod kopyalandı!");}catch(e){navigator.clipboard.writeText(el.value).then(()=>setStatus("Kod kopyalandı!"));}}
+function previewTemplateHtml(){const html=document.getElementById("tpl-html").value||"";const box=document.getElementById("tpl-prev-box");box.style.display="block";preloadFirebaseImages().then(()=>{box.innerHTML=processWikiMarkup(renderTemplate(html,{}));});}
+function deleteTemplate(slug){showConfirmModal("Bu şablonu sil?",()=>{db.ref("templates/"+slug).remove(()=>{setStatus("Silindi.");reloadTplList();refreshEditorTplPanel();});});}
+function previewTemplate(slug){loadAllTemplates().then(templates=>{const t=templates.find(t=>t.slug===slug);if(!t)return;preloadFirebaseImages().then(()=>{const rendered=renderTemplate(t.html,{});document.getElementById("modal-title").textContent="👁 "+t.name;document.getElementById("modal-body").innerHTML=`<div style="padding:6px;overflow:auto;">${processWikiMarkup(rendered)}</div>`;document.getElementById("modal-footer").style.display="none";document.getElementById("modal-overlay").style.display="flex";});});}
+
+/* ══ EDITOR TEMPLATE PANEL ══ */
+let editorTplCache=[];
+async function refreshEditorTplPanel(){
+  editorTplCache=await loadAllTemplates();
+  await preloadFirebaseImages();
+  /* Desktop panel */
+  const list=document.getElementById("ed-tpl-list");
+  if(list){
+    if(!editorTplCache.length){list.innerHTML=`<div style="padding:8px;font-size:9pt;color:#a98;font-style:italic;">Şablon yok</div>`;}
+    else{
+      list.innerHTML=editorTplCache.map(t=>{
+        const prevHtml=processWikiMarkup(renderTemplate(t.html,{}));
+        return`<div class="ed-tpl-item" id="edti-${t.slug}">
+          <div class="ed-tpl-preview-box">${prevHtml}</div>
+          <div class="ed-tpl-item-footer">
+            <span class="ed-tpl-item-name">📋 ${escHtml(t.name)}</span>
+            <button class="ed-tpl-item-ins" onclick="event.stopPropagation();insertTemplateToCanvas('${t.slug}')">+ Ekle</button>
+          </div>
+        </div>`;
+      }).join("");
+      editorTplCache.forEach(t=>{const el=document.getElementById("edti-"+t.slug);if(el)el.addEventListener("click",function(e){if(e.target.tagName==="BUTTON")return;insertTemplateToCanvas(t.slug);});});
+    }
+  }
+  /* Mobile bottom sheet — simpler items */
+  const bsList=document.getElementById("tpl-bs-list");
+  if(bsList){
+    if(!editorTplCache.length){bsList.innerHTML=`<div style="padding:12px;font-size:9pt;color:#a98;font-style:italic;grid-column:1/-1;">Şablon yok</div>`;}
+    else{
+      bsList.innerHTML=editorTplCache.map(t=>{
+        const prevHtml=processWikiMarkup(renderTemplate(t.html,{}));
+        return`<div class="bs-tpl-item">
+          <div class="bs-tpl-preview">${prevHtml}</div>
+          <div class="bs-tpl-footer">
+            <span class="bs-tpl-name">${escHtml(t.name)}</span>
+            <button class="bs-tpl-ins" onclick="insertTemplateToCanvas('${t.slug}');closeTplSheet();">+ Ekle</button>
+          </div>
+        </div>`;
+      }).join("");
+    }
+  }
+}
+function openTplSheet(){document.getElementById("tpl-bottom-sheet").classList.add("open");document.getElementById("tpl-bs-overlay").classList.add("on");}
+function closeTplSheet(){document.getElementById("tpl-bottom-sheet").classList.remove("open");document.getElementById("tpl-bs-overlay").classList.remove("on");}
+function toggleDesktopTplPanel(){const p=document.getElementById("ed-tpl-panel-desktop");if(p)p.classList.toggle("collapsed");}
+function handleTplPanelBtn(){if(window.innerWidth<=700){openTplSheet();}else{toggleDesktopTplPanel();}}
+
+function insertTemplateToCanvas(slug){
+  const tpl=editorTplCache.find(t=>t.slug===slug);if(!tpl){setStatus("Şablon bulunamadı.");return;}
+  const vars=extractTemplateVars(tpl.html);
+  if(vars.length>0){openTplVarsModal(tpl,args=>{addTemplateBlock(processWikiMarkup(renderTemplate(tpl.html,args)),buildTplTag(tpl,args,vars),tpl.slug);});}
+  else{addTemplateBlock(processWikiMarkup(renderTemplate(tpl.html,{})),`{{${tpl.name}}}`,tpl.slug);}
+}
+function buildTplTag(tpl,args,vars){let tag=`{{${tpl.name}`;vars.forEach(v=>{const val=args[v.name]||"";if(val&&val!==v.def)tag+=`|${v.name}=${val}`;});return tag+"}}";}
+function openTplVarsModal(tpl,cb){
+  document.getElementById("modal-title").textContent="📋 "+tpl.name;
+  document.getElementById("modal-footer").style.display="flex";
+  document.getElementById("modal-ok").textContent="▶ Ekle";
+  document.getElementById("modal-cancel").textContent="İptal";
+  const vars=extractTemplateVars(tpl.html);
+  document.getElementById("modal-body").innerHTML=`<div style="margin-bottom:8px;font-size:9pt;color:#800;">${escHtml(tpl.desc||"")}</div><div style="border:1px solid #d9bfb7;padding:8px;background:#fffef0;margin-bottom:12px;overflow:auto;" id="tpl-vars-prev">${processWikiMarkup(renderTemplate(tpl.html,{}))}</div>${vars.map(v=>`<label>${escHtml(v.name)}${v.def?` <span style="font-size:8pt;color:#a98;">(varsayılan: ${escHtml(v.def)})</span>`:""}</label><input type="text" id="tv-${slugify(v.name)}" placeholder="${escHtml(v.def||v.name)}" value="${escHtml(v.def)}" oninput="updateVarsPreview('${tpl.slug}')">`).join("")}`;
+  document.getElementById("modal-overlay").style.display="flex";
+  window._tplModalCb=()=>{const args={};vars.forEach(v=>{const el=document.getElementById("tv-"+slugify(v.name));args[v.name]=(el?el.value:"")||v.def||"";});cb(args);return true;};
+  setTimeout(()=>{const f=document.querySelector("#modal-body input");if(f)f.focus();},50);
+}
+function updateVarsPreview(slug){const tpl=editorTplCache.find(t=>t.slug===slug);if(!tpl)return;const vars=extractTemplateVars(tpl.html);const args={};vars.forEach(v=>{const el=document.getElementById("tv-"+slugify(v.name));args[v.name]=(el?el.value:"")||v.def||"";});const prev=document.getElementById("tpl-vars-prev");if(prev)prev.innerHTML=processWikiMarkup(renderTemplate(tpl.html,args));}
+
+function addTemplateBlock(renderedHtml,sourceTag,tplSlug){
+  const canvas=document.getElementById("editor-canvas-inner");if(!canvas)return;
+  const pos=getSpawnPos();const block=createBlock("template",pos.x,pos.y);
+  block.style.width="auto";block.dataset.tplSlug=tplSlug;block.dataset.tplTag=sourceTag;
+  const inner=block.querySelector(".e-block-inner");inner.contentEditable=false;
+  inner.innerHTML=renderedHtml;inner.style.padding="6px";inner.style.cursor="default";
+  inner.style.background="#fffef0";inner.style.border="1px dashed #e8b080";
+  const dh=document.createElement("div");dh.className="tpl-drag-handle";dh.textContent="⠿⠿⠿ taşı";block.appendChild(dh);
+  const ov=document.createElement("div");ov.className="tpl-edit-overlay";ov.innerHTML=`<button class="tpl-edit-btn" onclick="editTemplateBlock(this.closest('.e-block'))">✏️ Düzenle</button>`;block.appendChild(ov);
+  canvas.appendChild(block);block.scrollIntoView({behavior:"smooth",block:"nearest"});updateBlockCount();selectBlock(block);makeDragHandle(block,dh);
+}
+function makeDragHandle(block,handle){
+  handle.addEventListener("mousedown",e=>{e.stopPropagation();e.preventDefault();selectBlock(block);const sx=e.clientX,sy=e.clientY,ol=parseInt(block.style.left)||0,ot=parseInt(block.style.top)||0;block.style.opacity=".85";block.style.zIndex="99";handle.style.cursor="grabbing";function onMove(mv){block.style.left=Math.max(0,ol+(mv.clientX-sx))+"px";block.style.top=Math.max(0,ot+(mv.clientY-sy))+"px";updateBlockCount();}function onUp(){document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp);block.style.opacity="";block.style.zIndex="";handle.style.cursor="grab";}document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp);});
+  handle.addEventListener("touchstart",e=>{e.stopPropagation();e.preventDefault();selectBlock(block);const t0=e.touches[0],sx=t0.clientX,sy=t0.clientY,ol=parseInt(block.style.left)||0,ot=parseInt(block.style.top)||0;block.style.opacity=".85";function onMove(mv){mv.preventDefault();const t=mv.touches[0];block.style.left=Math.max(0,ol+(t.clientX-sx))+"px";block.style.top=Math.max(0,ot+(t.clientY-sy))+"px";}function onEnd(){block.removeEventListener("touchmove",onMove);block.removeEventListener("touchend",onEnd);block.style.opacity="";}block.addEventListener("touchmove",onMove,{passive:false});block.addEventListener("touchend",onEnd);},{passive:false});
+}
+function editTemplateBlock(block){
+  const slug=block.dataset.tplSlug;const tpl=editorTplCache.find(t=>t.slug===slug);
+  if(!tpl){openRawHtmlEdit(block);return;}
+  const vars=extractTemplateVars(tpl.html);
+  if(!vars.length){showConfirmModal(`"${tpl.name}" şablonunu sil?`,()=>{block.remove();updateBlockCount();});return;}
+  const currentTag=block.dataset.tplTag||"";const currentArgs=parseTplTagArgs(currentTag);
+  openTplVarsModal(tpl,args=>{const inner=block.querySelector(".e-block-inner");inner.innerHTML=processWikiMarkup(renderTemplate(tpl.html,args));block.dataset.tplTag=buildTplTag(tpl,args,vars);setStatus("Şablon güncellendi.");});
+  setTimeout(()=>{vars.forEach(v=>{const el=document.getElementById("tv-"+slugify(v.name));if(el&&currentArgs[v.name])el.value=currentArgs[v.name];});},80);
+}
+function parseTplTagArgs(tag){const args={};const inner=tag.replace(/^\{\{[^|]+/,"").replace(/\}\}$/,"");if(!inner)return args;inner.split("|").forEach(part=>{const eq=part.indexOf("=");if(eq>0)args[part.slice(0,eq).trim()]=part.slice(eq+1);});return args;}
+function openRawHtmlEdit(block){const inner=block.querySelector(".e-block-inner");document.getElementById("modal-title").textContent="✏️ HTML Düzenle";document.getElementById("modal-footer").style.display="flex";document.getElementById("modal-ok").textContent="Uygula";document.getElementById("modal-body").innerHTML=`<textarea id="raw-html-ed" rows="10" style="font-family:'Courier New',monospace;font-size:9pt;width:100%;border:1px solid #555;background:#1e1e1e;color:#d4d4d4;padding:8px;outline:none;">${escHtml(inner.innerHTML)}</textarea>`;document.getElementById("modal-overlay").style.display="flex";window._tplModalCb=()=>{inner.innerHTML=document.getElementById("raw-html-ed").value;return true;};}
+
+/* ══ ADMIN PANEL (Admin only) ══ */
+function renderAdmin(){
+  if(!isAdmin()){if(isProko())renderModPanel();else renderHome();return;}
+  document.title="Admin — Babane Pedia";setStatus("Admin Paneli");
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head">
+        <div class="ph-tabs"><span class="ph-tab active">⚙️ Admin</span><span class="ph-tab" onclick="navigate('templates')">📋 Şablonlar</span></div>
+        <div class="ph-actions"><a onclick="editHomepage()">✏️ Ana Sayfa</a><a onclick="openAnnouncementEditor()">📢 Duyuru</a><a onclick="goHome()">Ana Sayfa</a></div>
+      </div>
+      <div class="page-body">
+        <div class="notice success">⚙️ Admin: <b>${escHtml(currentUser.username)}</b></div>
+        <p class="art-title" style="font-size:12pt;margin-bottom:8px;">Bekleyen Düzenlemeler</p>
+        <div id="pending-list"><div class="empty-state">Yükleniyor…</div></div>
+        <p class="art-title" style="font-size:12pt;margin:14px 0 8px;">Şikayet Edilen Sayfalar</p>
+        <div id="flags-list"><div class="empty-state">Yükleniyor…</div></div>
+        <p class="art-title" style="font-size:12pt;margin:14px 0 8px;">Kayıtlı Kullanıcılar</p>
+        <div id="user-list"><div class="empty-state">Yükleniyor…</div></div>
+      </div>
+    </div>`;
+  loadPendingList("pending-list");loadFlagsList("flags-list");
+  db.ref("users").once("value",snap=>{
+    const data=snap.val();const el=document.getElementById("user-list");if(!el)return;
+    if(!data){el.innerHTML=`<div class="empty-state">Kullanıcı yok.</div>`;return;}
+    el.innerHTML=`<table class="wiki-table"><tr><th>Kullanıcı</th><th>Rol</th><th>Kayıt</th><th>İşlem</th></tr>${Object.entries(data).map(([u,d])=>`<tr>
+      <td><a onclick="navigate('user/${u}')">${escHtml(u)}</a></td>
+      <td style="color:${d.role==='proko'?'#a0d':d.role==='admin'?'#e87020':'inherit'};font-weight:${d.role==='proko'||d.role==='admin'?'bold':'normal'};">${d.role||"user"}</td>
+      <td>${d.createdAt?new Date(d.createdAt).toLocaleDateString("tr-TR"):"—"}</td>
+      <td><div style="display:flex;gap:3px;flex-wrap:wrap;">
+        ${d.role==="proko"?`<button onclick="revokeProko('${u}')" style="font-size:7pt;padding:1px 5px;background:#f5e0ff;border:1px solid #c8a0e0;color:#a0d;cursor:pointer;">Proko Al</button>`:`<button onclick="grantProko('${u}')" style="font-size:7pt;padding:1px 5px;background:#f0e0f5;border:1px solid #c8a0d0;color:#a0d;cursor:pointer;">🛡️ Proko</button>`}
+        <button onclick="banUser('${u}')" style="font-size:7pt;padding:1px 5px;background:#fff0f0;border:1px solid #ffa0a0;color:#d00;cursor:pointer;">Ban</button>
+      </div></td>
+    </tr>`).join("")}</table>`;
+  });
+}
+
+/* ══ PROKO / MODERATOR PANEL ══ */
+function renderModPanel(){
+  if(!currentUser){showLoginModal();return;}
+  if(isAdmin()){renderAdmin();return;}
+  if(!isProko()){setStatus("Bu panele erişim yetkiniz yok.");renderHome();return;}
+  document.title="Mod Panel — Babane Pedia";setStatus("Moderatör Paneli");
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head">
+        <div class="ph-tabs">
+          <span class="ph-tab active">🛡️ Mod Panel</span>
+          <span class="ph-tab" onclick="navigate('recent')">🕐 Son Değişiklikler</span>
+          <span class="ph-tab" onclick="navigate('templates')">📋 Şablonlar</span>
+        </div>
+        <div class="ph-actions"><a onclick="goHome()">Ana Sayfa</a></div>
+      </div>
+      <div class="page-body">
+        <div class="notice proko" style="margin-bottom:12px;">
+          🛡️ <b>Proko (Moderatör): ${escHtml(currentUser.username)}</b><br>
+          <span style="font-size:8pt;">Sayfa onaylayabilir, reddedebilir, şikayetleri kapatabilir ve sayfaları düzenleyebilirsiniz. Ban yetkisi yoktur.</span>
+        </div>
+
+        <div class="mod-section">
+          <div class="mod-section-head">
+            📋 Bekleyen Onaylar
+            <span id="mod-pending-count" style="background:#d00;color:#fff;border-radius:8px;padding:0 6px;font-size:9px;margin-left:6px;"></span>
+          </div>
+          <div id="pending-list"><div class="empty-state">Yükleniyor…</div></div>
+        </div>
+
+        <div class="mod-section">
+          <div class="mod-section-head">🚩 Şikayet Edilen Sayfalar</div>
+          <div id="flags-list"><div class="empty-state">Yükleniyor…</div></div>
+        </div>
+
+        <div class="mod-section">
+          <div class="mod-section-head">🕐 Son Eklenen / Değiştirilen Sayfalar</div>
+          <div id="mod-recent"><div class="empty-state">Yükleniyor…</div></div>
+        </div>
+
+        <div class="mod-section">
+          <div class="mod-section-head">📊 Hızlı İstatistik</div>
+          <div id="mod-stats"><div class="empty-state">Yükleniyor…</div></div>
+        </div>
+      </div>
+    </div>`;
+
+  /* Load pending */
+  db.ref("pending").once("value",snap=>{
+    const data=snap.val();
+    const pendingEl=document.getElementById("pending-list");
+    const countEl=document.getElementById("mod-pending-count");
+    if(!pendingEl)return;
+    if(!data){
+      pendingEl.innerHTML=`<div class="empty-state">✅ Bekleyen onay yok.</div>`;
+      if(countEl)countEl.style.display="none";
+      return;
+    }
+    const entries=Object.entries(data);
+    if(countEl){countEl.textContent=entries.length;countEl.style.display="inline";}
+    pendingEl.innerHTML=entries.map(([key,p])=>`
+      <div class="pend-card">
+        <h4>📄 ${escHtml(p.title)}</h4>
+        <div class="pm">
+          ✍️ <a onclick="navigate('user/${p.author||''}')" style="color:#117743;text-decoration:none;">${escHtml(p.author||"Anonim")}</a>
+          &bull; ${new Date(p.createdAt).toLocaleString("tr-TR")}
+          ${(p.categories&&p.categories.length)?`&bull; 🏷️ ${p.categories.join(", ")}`:""}
+        </div>
+        <div class="pend-actions">
+          <button class="btn-approve" onclick="approvePending('${key}')">✅ Onayla</button>
+          <button class="btn-reject" onclick="rejectPending('${key}')">❌ Reddet</button>
+          <button class="btn-cancel" onclick="previewPending('${key}')">👁 Önizle</button>
+        </div>
+      </div>`).join("");
+  });
+
+  /* Load flags */
+  db.ref("flags").once("value",snap=>{
+    const data=snap.val();
+    const el=document.getElementById("flags-list");if(!el)return;
+    if(!data){el.innerHTML=`<div class="empty-state">Şikayet yok.</div>`;return;}
+    el.innerHTML=Object.entries(data).map(([key,f])=>`
+      <div class="pend-card">
+        <h4>🚩 ${escHtml(f.slug)}</h4>
+        <div class="pm">Şikayet eden: ${escHtml(f.by)} &bull; ${new Date(f.at).toLocaleString("tr-TR")}</div>
+        <div class="pend-actions">
+          <a onclick="navigate('article/${f.slug}')" class="btn-cancel" style="padding:2px 10px;">👁 Görüntüle</a>
+          <a onclick="navigate('editor/${f.slug}')" class="btn-cancel" style="padding:2px 10px;">✏️ Düzenle</a>
+          <button class="btn-approve" onclick="closeFlag('${key}')">✅ Kapat</button>
+          <button class="btn-reject" onclick="deleteFlaggedPage('${key}','${f.slug}')">🗑️ Sayfayı Sil</button>
+        </div>
+      </div>`).join("");
+  });
+
+  /* Load recent articles */
+  db.ref("articles").once("value",snap=>{
+    const el=document.getElementById("mod-recent");if(!el)return;
+    const data=snap.val();if(!data){el.innerHTML=`<div class="empty-state">Hiç sayfa yok.</div>`;return;}
+    const arts=Object.values(data)
+      .filter(a=>!a.slug.startsWith("user-"))
+      .sort((a,b)=>(b.updatedAt||b.createdAt)-(a.updatedAt||a.createdAt))
+      .slice(0,20);
+    el.innerHTML=`<table class="wiki-table">
+      <tr><th>Sayfa</th><th>Yazar</th><th>Tarih</th><th>İşlem</th></tr>
+      ${arts.map(a=>`<tr>
+        <td><a onclick="navigate('article/${a.slug}')">${escHtml(a.title)}</a></td>
+        <td><a onclick="navigate('user/${a.author||''}')" style="color:#117743;text-decoration:none;">${escHtml(a.author||"Anonim")}</a></td>
+        <td style="font-size:8pt;color:#888;">${timeAgo(a.updatedAt||a.createdAt)}</td>
+        <td style="white-space:nowrap;">
+          <a onclick="navigate('editor/${a.slug}')" style="font-size:8pt;margin-right:4px;">✏️ Düzenle</a>
+          <a onclick="modDeletePage('${a.slug}')" style="font-size:8pt;color:#d00;">🗑️ Sil</a>
+        </td>
+      </tr>`).join("")}
+    </table>`;
+  });
+
+  /* Stats */
+  Promise.all([db.ref("articles").once("value"),db.ref("pending").once("value"),db.ref("flags").once("value")]).then(([arts,pend,flags])=>{
+    const el=document.getElementById("mod-stats");if(!el)return;
+    el.innerHTML=`<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:9pt;">
+      <div style="background:#eafaf0;border:1px solid #c8e8d0;padding:8px 14px;border-radius:3px;text-align:center;"><div style="font-size:18pt;font-weight:bold;color:#117743;">${arts.val()?Object.keys(arts.val()).length:0}</div><div style="color:#555;">Toplam Sayfa</div></div>
+      <div style="background:#fff8e0;border:1px solid #e8d890;padding:8px 14px;border-radius:3px;text-align:center;"><div style="font-size:18pt;font-weight:bold;color:#886600;">${pend.val()?Object.keys(pend.val()).length:0}</div><div style="color:#555;">Bekleyen Onay</div></div>
+      <div style="background:#fff0f0;border:1px solid #e8b0b0;padding:8px 14px;border-radius:3px;text-align:center;"><div style="font-size:18pt;font-weight:bold;color:#d00;">${flags.val()?Object.keys(flags.val()).length:0}</div><div style="color:#555;">Açık Şikayet</div></div>
+    </div>`;
+  });
+}
+
+function closeFlag(key){db.ref("flags/"+key).remove(()=>{setStatus("Şikayet kapatıldı.");renderModPanel();});}
+function modDeletePage(slug){
+  showConfirmModal(`"${slug}" sayfasını sil?`,()=>{
+    db.ref("articles/"+slug).remove(()=>{setStatus("Sayfa silindi.");renderModPanel();});
+  });
+}
+function deleteFlaggedPage(flagKey,slug){
+  showConfirmModal(`"${slug}" sayfasını sil ve şikayeti kapat?`,()=>{
+    db.ref("articles/"+slug).remove();
+    db.ref("flags/"+flagKey).remove();
+    setStatus("Sayfa silindi.");renderModPanel();
+  });
+}
+
+function loadPendingList(elId){
+  db.ref("pending").once("value",snap=>{
+    const data=snap.val();const el=document.getElementById(elId);if(!el)return;
+    if(!data){el.innerHTML=`<div class="empty-state">✅ Bekleyen yok.</div>`;return;}
+    el.innerHTML=Object.entries(data).map(([key,p])=>`<div class="pend-card"><h4>${escHtml(p.title)}</h4><div class="pm">✍️ ${escHtml(p.author||"Anonim")} &bull; ${new Date(p.createdAt).toLocaleString("tr-TR")}</div><div class="pend-actions"><button class="btn-approve" onclick="approvePending('${key}')">✅ Onayla</button><button class="btn-reject" onclick="rejectPending('${key}')">❌ Reddet</button><button class="btn-cancel" onclick="previewPending('${key}')">👁 Önizle</button></div></div>`).join("");
+  });
+}
+function loadFlagsList(elId){
+  db.ref("flags").once("value",snap=>{
+    const data=snap.val();const el=document.getElementById(elId);if(!el)return;
+    if(!data){el.innerHTML=`<div class="empty-state">Şikayet yok.</div>`;return;}
+    el.innerHTML=Object.entries(data).map(([key,f])=>`<div class="pend-card"><h4>${escHtml(f.slug)}</h4><div class="pm">🚩 ${escHtml(f.by)} &bull; ${new Date(f.at).toLocaleString("tr-TR")}</div><div class="pend-actions"><a onclick="navigate('article/${f.slug}')" class="btn-cancel" style="padding:2px 10px;">Görüntüle</a><a onclick="navigate('editor/${f.slug}')" class="btn-cancel" style="padding:2px 10px;">✏️ Düzenle</a><button class="btn-reject" onclick="db.ref('flags/${key}').remove();isAdmin()?renderAdmin():renderModPanel();">Kapat</button></div></div>`).join("");
+  });
+}
+function banUser(username){showConfirmModal(`"${username}" kullanıcısını yasakla?`,()=>{db.ref("users/"+username+"/banned").set(true,()=>{setStatus(username+" yasaklandı.");renderAdmin();});});}
+function approvePending(key){
+  db.ref("pending/"+key).once("value",snap=>{
+    if(!snap.exists())return;const p=snap.val();
+    saveRevision(p.slug,p);
+    db.ref("articles/"+p.slug).set(p,err=>{
+      if(err){alert("Hata: "+err.message);return;}
+      autoCatalogPageImages(p.slug,p.blocks||[]);
+      db.ref("pending/"+key).remove();
+      setStatus("Onaylandı: "+p.title);
+      if(isAdmin())renderAdmin();else renderModPanel();
+    });
+  });
+}
+function rejectPending(key){showConfirmModal("Reddet?",()=>{db.ref("pending/"+key).remove(()=>{setStatus("Reddedildi.");if(isAdmin())renderAdmin();else renderModPanel();});});}
+async function previewPending(key){
+  const [snap,templates]=await Promise.all([db.ref("pending/"+key).once("value"),loadAllTemplates(),preloadFirebaseImages()]);
+  if(!snap.exists())return;const a=snap.val();const ch=computeCanvasH(a.blocks||[]);
+  const bHtml=(a.blocks||[]).map(b=>{const w=b.width?`width:${b.width};`:"",h=b.height?`height:${b.height};`:"";if(b.type==="template")return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}">${renderTemplateTags(b.tplTag||b.content,templates)}</div>`;if(b.type==="text")return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}">${renderTemplateTags(b.content,templates)}</div>`;return`<div class="view-block" style="left:${b.left};top:${b.top};${w}${h}"><img src="${escHtml(b.content)}" alt=""></div>`;}).join("");
+  document.getElementById("modal-title").textContent="👁 "+a.title;document.getElementById("modal-body").innerHTML=`<div class="viewer-canvas" style="min-height:${ch}px;">${bHtml}</div>`;document.getElementById("modal-footer").style.display="none";document.getElementById("modal-overlay").style.display="flex";
+}
+
+/* ══ EDITOR ══ */
+let selectedBlock=null,editingSlug=null,blockIdCounter=0,activeInner=null,lastSpawnX=30,lastSpawnY=30,isHomepageEditor=false;
+function getSpawnPos(){return{x:Math.max(10,lastSpawnX+Math.random()*8-4),y:Math.max(10,lastSpawnY+Math.random()*8-4)};}
+
+function renderEditor(loadSlug){
+  isHomepageEditor=(loadSlug==="__homepage__");
+  document.title=(isHomepageEditor?"Ana Sayfa":"Düzenle")+" — Babane Pedia";
+  setStatus("Editör hazır");
+  editingSlug=loadSlug||null;selectedBlock=null;blockIdCounter=0;activeInner=null;
+  const roleLabel=isAdmin()?"Admin":isProko()?"Proko":"";
+  const adminMsg=canAutoApprove()?`<div class="notice success">⚙️ ${roleLabel}: değişiklikler doğrudan yayınlanır.</div>`:isLoggedIn()?`<div class="notice">👤 ${escHtml(currentUser.username)}: Onaya gidecek.</div>`:`<div class="notice warn">⚠️ Giriş yapmadan gönderilen içerikler onaya gidecek. <a style="cursor:pointer;text-decoration:underline;" onclick="showLoginModal()">Giriş Yap</a></div>`;
+  const saveLabel=isHomepageEditor?"💾 Ana Sayfayı Kaydet":canAutoApprove()?"💾 Yayınla":"💾 Onaya Gönder";
+  /* Detect user page slug to pre-fill title */
+  const isUserPage=loadSlug&&loadSlug.startsWith("user-");
+  const defaultTitle=isUserPage?"User:"+loadSlug.slice(5):"";
+  document.getElementById("main-content").innerHTML=`
+    <div class="page-wrap">
+      <div class="page-head">
+        <div class="ph-tabs">
+          <span class="ph-tab" onclick="goHome()">🏠 Ana Sayfa</span>
+          <span class="ph-tab active">✏️ ${isHomepageEditor?"Ana Sayfa Düzenle":isUserPage?"User Sayfası":"Düzenle"}</span>
+          ${loadSlug&&!isHomepageEditor?`<span class="ph-tab" onclick="navigate('article/${loadSlug}')">📄 Sayfaya Dön</span>`:""}
+        </div>
+      </div>
+      <div class="page-body" style="padding:8px 10px;">
+        <div class="editor-wrap">
+          ${isHomepageEditor?`<div style="background:#e8f4e8;border:1px solid #4a7d44;padding:6px 10px;margin-bottom:8px;font-size:9pt;color:#2a4d2a;">🏠 <b>Ana Sayfa</b> düzenleniyor.</div>`:""}
+          ${!isHomepageEditor?`<input type="text" id="ed-title" class="ed-title" placeholder="Sayfa başlığı…" value="${escHtml(defaultTitle)}">`:""}
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+            ${!isHomepageEditor?`<input type="text" id="ed-location" class="ed-loc" placeholder="📍 Konum (opsiyonel)"><input type="text" id="ed-categories" class="ed-loc" placeholder="🏷️ Kategoriler (virgülle ayır)" style="width:260px;">`:""}
+            ${isAdmin()?`<button class="tpl-new-btn" onclick="openTemplateEditor(null)" style="font-size:9pt;">+ Yeni Şablon</button>`:""}
+          </div>
+          ${adminMsg}
+          <div class="wiki-tb">
+            <div class="tbg"><button class="tb" onclick="edUndo()">↩</button><button class="tb" onclick="edRedo()">↪</button></div>
+            <div class="tbg"><button class="tb" onclick="fmt('bold')"><b>B</b></button><button class="tb" onclick="fmt('italic')"><i>I</i></button><button class="tb" onclick="fmt('underline')"><u>U</u></button><button class="tb" onclick="fmt('strikeThrough')"><s>S</s></button></div>
+            <div class="tbg"><select class="tb-sel" onchange="applyHeading(this.value)"><option value="">Paragraf</option><option value="h1">H1</option><option value="h2">H2</option><option value="h3">H3</option><option value="h4">H4</option></select></div>
+            <div class="tbg"><select class="tb-sel" onchange="applyFontFamily(this.value)"><option value="">Yazı Tipi</option><option value="arial,sans-serif">Arial</option><option value="'Times New Roman',serif">Times</option><option value="Georgia,serif">Georgia</option><option value="tahoma,sans-serif">Tahoma</option><option value="'Courier New',monospace">Courier</option></select></div>
+            <div class="tbg"><select class="tb-sel" onchange="applyFontSize(this.value);this.value=''"><option value="">Boyut</option><option value="1">9px</option><option value="2">11px</option><option value="3">13px</option><option value="4">16px</option><option value="5">20px</option><option value="6">26px</option><option value="7">36px</option></select></div>
+            <div class="tbg"><div class="tb-cl"><span>Yaz:</span><input type="color" class="tb-color" value="#800000" onchange="applyColor('foreColor',this.value)"></div><div class="tb-cl"><span>BG:</span><input type="color" class="tb-color" value="#ffff00" onchange="applyColor('hiliteColor',this.value)"></div></div>
+            <div class="tbg"><button class="tb" onclick="fmt('justifyLeft')">⬛╌</button><button class="tb" onclick="fmt('justifyCenter')">╌⬛╌</button><button class="tb" onclick="fmt('justifyRight')">╌⬛</button></div>
+            <div class="tbg"><button class="tb" onclick="fmt('insertUnorderedList')">• Liste</button><button class="tb" onclick="fmt('insertOrderedList')">1. Liste</button></div>
+            <div class="tbg"><button class="tb" onclick="fmt('insertHorizontalRule')">──</button><button class="tb" onclick="insertLink()">🔗</button><button class="tb" onclick="insertTable()">⊞</button><button class="tb" id="emoji-btn" onclick="toggleEmojiPicker(event)">😀</button></div>
+            <div class="tbg"><button class="tb" onclick="addTextBlock()">📝 Metin</button><button class="tb" onclick="addImageBlock()">🖼️ Resim</button><button class="tb" onclick="addBoxBlock()">📦 Kutu</button></div>
+            <div class="tbg"><button class="tb" onclick="handleTplPanelBtn()" style="background:#f5ece4;border:1px solid #d9bfb7;font-weight:bold;">📋 Şablon</button></div>
+            <div class="tbg"><button class="tb" onclick="changeCanvasSize()">⤢</button><button class="tb" onclick="clearCanvas()" style="color:#d00">🗑️</button></div>
+          </div>
+          <div class="ed-layout">
+            <div class="ed-tpl-panel" id="ed-tpl-panel-desktop">
+              <div class="ed-tpl-panel-head"><span>📋 Şablonlar</span>${isAdmin()?`<button onclick="openTemplateEditor(null)">+ Yeni</button>`:""}</div>
+              <div class="ed-tpl-list" id="ed-tpl-list"><div style="padding:8px;font-size:9pt;color:#a98;font-style:italic;">Yükleniyor…</div></div>
+            </div>
+            <div class="ed-canvas-wrap">
+              <div class="ed-canvas" id="editor-canvas">
+                <div class="ed-canvas-inner" id="editor-canvas-inner">
+                  <div class="ed-canvas-hint" id="canvas-hint">
+                    <div style="font-size:24px;">📝</div>
+                    <div>Sol panelden şablon seç veya araç çubuğundan başla</div>
+                    <div style="font-size:8pt;color:#d9bfb7;">Mobilde: 📋 Şablon butonuna bas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ed-bar">
+            <button class="btn-post" onclick="saveArticle()">${saveLabel}</button>
+            <button class="btn-cancel" onclick="goHome()">İptal</button>
+            <span style="font-size:9pt;color:#800;" id="ed-block-count">0 blok</span>
+            <span style="font-size:8pt;color:#a98;margin-left:auto;">Ctrl+S</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById("editor-canvas").addEventListener("mousedown",e=>{if(e.target.id==="editor-canvas"||e.target.id==="editor-canvas-inner")deselectAll();});
+  document.getElementById("editor-canvas").addEventListener("touchstart",e=>{if(e.target.id==="editor-canvas"||e.target.id==="editor-canvas-inner")deselectAll();},{passive:true});
+  const cvs=document.getElementById("editor-canvas");
+  function trackPos(cx,cy){const r=cvs.getBoundingClientRect();lastSpawnX=Math.max(10,cx-r.left+cvs.scrollLeft);lastSpawnY=Math.max(10,cy-r.top+cvs.scrollTop);}
+  cvs.addEventListener("mousedown",e=>{trackPos(e.clientX,e.clientY);});
+  cvs.addEventListener("touchstart",e=>{const t=e.touches[0];trackPos(t.clientX,t.clientY);},{passive:true});
+
+  if(isHomepageEditor){db.ref("homepage").once("value",snap=>{if(!snap.exists()||!snap.val().blocks)return;(snap.val().blocks||[]).forEach(b=>loadBlock(b));});}
+  else if(loadSlug){
+    db.ref("articles/"+loadSlug).once("value",snap=>{
+      if(snap.exists()){
+        const a=snap.val();
+        const titleEl=document.getElementById("ed-title"),locEl=document.getElementById("ed-location"),catEl=document.getElementById("ed-categories");
+        if(titleEl)titleEl.value=a.title;if(locEl)locEl.value=a.location||"";if(catEl)catEl.value=(a.categories||[]).join(", ");
+        refreshEditorTplPanel().then(()=>{(a.blocks||[]).forEach(b=>loadBlock(b));});return;
+      } else {
+        /* New user page — title already pre-filled */
+        refreshEditorTplPanel();
+      }
+    });
+    return;
+  }
+  refreshEditorTplPanel();
+}
+
+/* FORMAT */
+function fmt(cmd){ensureFocus();document.execCommand(cmd,false,null);}
+function applyColor(cmd,val){ensureFocus();document.execCommand(cmd,false,val);}
+function applyFontSize(val){if(!val)return;ensureFocus();const pxMap={"1":"9px","2":"11px","3":"13px","4":"16px","5":"20px","6":"26px","7":"36px"};document.execCommand('fontSize',false,'7');const inner=getActiveInner();if(!inner)return;inner.querySelectorAll('font[size="7"]').forEach(f=>{f.removeAttribute('size');f.style.fontSize=pxMap[val]||val;});}
+function applyFontFamily(val){if(!val)return;ensureFocus();document.execCommand('fontName',false,val);}
+function applyHeading(val){ensureFocus();document.execCommand('formatBlock',false,val||'p');}
+function ensureFocus(){const inner=getActiveInner();if(inner&&!inner.contains(document.activeElement))inner.focus();}
+function getActiveInner(){if(activeInner)return activeInner;if(selectedBlock)return selectedBlock.querySelector(".e-block-inner");return null;}
+function edUndo(){document.execCommand('undo',false,null);}
+function edRedo(){document.execCommand('redo',false,null);}
+function insertLink(){showInputModal("🔗 Bağlantı Ekle",[{id:"lu",label:"URL:",placeholder:"https://…",type:"text"},{id:"lt",label:"Metin:",placeholder:"Görünen metin",type:"text"}],vals=>{ensureFocus();document.execCommand('insertHTML',false,`<a href="${escHtml(vals.lu)}" target="_blank">${escHtml(vals.lt||vals.lu)}</a>`);});}
+function insertTable(){showInputModal("⊞ Tablo Ekle",[{id:"tr",label:"Satır:",placeholder:"3",type:"number"},{id:"tc",label:"Sütun:",placeholder:"3",type:"number"}],vals=>{const rows=parseInt(vals.tr)||3,cols=parseInt(vals.tc)||3;let html='<table class="wiki-table">';for(let r=0;r<rows;r++){html+='<tr>';for(let c=0;c<cols;c++)html+=`<td>${r===0?`<b>Başlık ${c+1}</b>`:"Hücre"}</td>`;html+='</tr>';}html+='</table>';const inner=getActiveInner();if(inner){inner.focus();document.execCommand('insertHTML',false,html);}else addTextBlock(html);});}
+
+/* EMOJI */
+const EMOJIS=['😀','😁','😂','🤣','😍','🥰','😎','🤔','😭','😡','🤯','🥺','😱','😴','😈','🤡','💀','👻','🤖','👍','👎','👋','💪','🙏','👀','🫶','❤️','💔','🧡','💛','💚','💙','🔥','✨','💯','🎉','🚀','⚡','🌟','💥','🎯','🏆','🌍','🌈','🌙','☀️','❄️','🌹','🌻','🍀','🎵','🎶','📝','📸','💻','📱','🔗','⚠️','✅','❌','💡','📌','🗑️','🎮','📚','🔬','⚔️','🛡️','🏠','🚗','✈️','🍕','🍔','☕','🐱','🐶','🦊','🐸','🦁','🐧','🐲','👾'];
+let emojiOpen=false;
+function buildEmojiGrid(q){const list=q?EMOJIS.filter(e=>e.includes(q)):EMOJIS;document.getElementById("emoji-grid").innerHTML=list.map(e=>`<span onclick="insertEmoji('${e}')">${e}</span>`).join("");}
+function filterEmojis(q){buildEmojiGrid(q);}
+function toggleEmojiPicker(e){const picker=document.getElementById("emoji-picker");if(emojiOpen){closeEmojiPicker();return;}const rect=document.getElementById("emoji-btn").getBoundingClientRect();picker.style.top=(rect.bottom+window.scrollY+3)+"px";picker.style.left=Math.min(rect.left+window.scrollX,window.innerWidth-285)+"px";picker.style.display="block";emojiOpen=true;buildEmojiGrid("");document.getElementById("emoji-search").value="";setTimeout(()=>document.getElementById("emoji-search").focus(),50);}
+function closeEmojiPicker(){const p=document.getElementById("emoji-picker");if(p)p.style.display="none";emojiOpen=false;}
+function insertEmoji(emoji){const inner=getActiveInner();if(inner){inner.focus();document.execCommand('insertText',false,emoji);}closeEmojiPicker();}
+document.addEventListener("mousedown",e=>{if(emojiOpen&&!document.getElementById("emoji-picker").contains(e.target)&&e.target.id!=="emoji-btn")closeEmojiPicker();});
+
+/* BLOCKS */
+function updateBlockCount(){
+  const canvas=document.getElementById("editor-canvas-inner");if(!canvas)return;
+  const n=canvas.querySelectorAll(".e-block").length;
+  const hint=document.getElementById("canvas-hint");if(hint)hint.style.display=n>0?"none":"flex";
+  const ce=document.getElementById("ed-block-count");if(ce)ce.textContent=n+" blok";
+  setStatusBlocks(n+" blok");
+  let maxW=800,maxH=480;
+  canvas.querySelectorAll(".e-block").forEach(b=>{maxW=Math.max(maxW,(parseInt(b.style.left)||0)+(b.offsetWidth||200)+40);maxH=Math.max(maxH,(parseInt(b.style.top)||0)+(b.offsetHeight||100)+60);});
+  canvas.style.minWidth=maxW+"px";canvas.style.minHeight=maxH+"px";
+}
+function addTextBlock(initHtml){const canvas=document.getElementById("editor-canvas-inner");if(!canvas)return;const pos=getSpawnPos();const block=createBlock("text",pos.x,pos.y);block.style.width="300px";const inner=block.querySelector(".e-block-inner");inner.innerHTML=initHtml||"<p>Buraya yazın…</p>";canvas.appendChild(block);updateBlockCount();setTimeout(()=>{inner.focus();activeInner=inner;const r=document.createRange();r.selectNodeContents(inner);r.collapse(false);const s=window.getSelection();s.removeAllRanges();s.addRange(r);},60);}
+function addBoxBlock(){const canvas=document.getElementById("editor-canvas-inner");if(!canvas)return;const pos=getSpawnPos();const block=createBlock("text",pos.x,pos.y);block.style.width="260px";block.style.border="2px solid #d9bfb7";block.style.background="#f0e0d6";const inner=block.querySelector(".e-block-inner");inner.innerHTML="<b style='color:#d00;'>Kutu Başlığı</b><p style='font-size:9pt;margin-top:4px;'>İçerik buraya…</p>";canvas.appendChild(block);updateBlockCount();setTimeout(()=>{inner.focus();activeInner=inner;},60);}
+
+function loadBlock(b){
+  const canvas=document.getElementById("editor-canvas-inner");if(!canvas)return;
+  if(b.type==="template"){
+    const tpl=editorTplCache.find(t=>t.slug===b.tplSlug)||null;
+    const args=b.tplTag?parseTplTagArgs(b.tplTag):{};
+    const renderedHtml=tpl?processWikiMarkup(renderTemplate(tpl.html,args)):(b.content||"");
+    const block=createBlock("template",parseInt(b.left)||10,parseInt(b.top)||10);
+    if(b.width)block.style.width=b.width;if(b.height)block.style.height=b.height;
+    block.dataset.tplSlug=b.tplSlug||"";block.dataset.tplTag=b.tplTag||b.content||"";
+    const inner=block.querySelector(".e-block-inner");inner.contentEditable=false;
+    inner.innerHTML=renderedHtml;inner.style.padding="6px";inner.style.background="#fffef0";inner.style.border="1px dashed #e8b080";
+    const dh=document.createElement("div");dh.className="tpl-drag-handle";dh.textContent="⠿⠿⠿ taşı";block.appendChild(dh);makeDragHandle(block,dh);
+    const ov=document.createElement("div");ov.className="tpl-edit-overlay";ov.innerHTML=`<button class="tpl-edit-btn" onclick="editTemplateBlock(this.closest('.e-block'))">✏️ Düzenle</button>`;block.appendChild(ov);
+    canvas.appendChild(block);updateBlockCount();return;
+  }
+  const block=createBlock(b.type,parseInt(b.left)||10,parseInt(b.top)||10);
+  if(b.width)block.style.width=b.width;if(b.height)block.style.height=b.height;
+  const inner=block.querySelector(".e-block-inner");
+  if(b.type==="image"){inner.contentEditable=false;const img=document.createElement("img");img.src=b.content;img.draggable=false;inner.appendChild(img);}
+  else inner.innerHTML=b.content||"";
+  canvas.appendChild(block);updateBlockCount();
+}
+
+/* IMAGE BLOCK */
+function addImageBlock(){showImageModal(src=>{const canvas=document.getElementById("editor-canvas-inner");if(!canvas)return;const pos=getSpawnPos();const block=createBlock("image",pos.x,pos.y);block.style.width="280px";block.style.height="200px";const inner=block.querySelector(".e-block-inner");inner.contentEditable=false;const img=document.createElement("img");img.src=src;img.draggable=false;inner.appendChild(img);canvas.appendChild(block);updateBlockCount();selectBlock(block);});}
+function showImageModal(cb){
+  document.getElementById("modal-title").textContent="🖼️ Resim Ekle";
+  document.getElementById("modal-footer").style.display="none";
+  document.getElementById("modal-body").innerHTML=`
+    <div style="display:flex;margin-bottom:10px;">
+      <button id="imgtab-file" onclick="switchImgTab('file')" style="flex:1;padding:4px;background:#98e;border:1px solid #7799cc;cursor:pointer;font-weight:bold;font-size:9pt;color:#000;">📁 Dosyadan</button>
+      <button id="imgtab-url" onclick="switchImgTab('url')" style="flex:1;padding:4px;background:#f0e0d6;border:1px solid #d9bfb7;border-left:none;cursor:pointer;font-size:9pt;color:#800;">🔗 URL</button>
+      <button id="imgtab-sb" onclick="switchImgTab('sb')" style="flex:1;padding:4px;background:#f0e0d6;border:1px solid #d9bfb7;border-left:none;cursor:pointer;font-size:9pt;color:#800;">🗃️ Katalog</button>
+    </div>
+    <div id="img-tab-file">
+      <label class="img-up-wrap" id="upload-drop" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+        <input type="file" id="img-file-input" accept="image/*" onchange="handleFileSelect(event)">
+        <div style="font-size:26px;">🖼️</div><div>Resmi <b>sürükle</b> veya <u>tıkla</u></div>
+      </label>
+      <div class="upload-prev" id="upload-preview"><div style="width:56px;height:56px;border:1px solid #d9bfb7;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;flex-shrink:0;"><img id="upload-thumb-img" style="max-width:56px;max-height:56px;object-fit:contain;display:block;"></div><div class="up-meta"><div class="up-name" id="upload-fname"></div><div class="up-size" id="upload-fsize"></div><div class="up-warn" id="upload-warn"></div></div><button class="upload-clear" onclick="clearUpload()">✕</button></div>
+      <div style="display:flex;gap:6px;margin-top:8px;"><button onclick="confirmFileUpload()" style="flex:1;padding:4px;background:#98e;border:1px solid #7799cc;cursor:pointer;font-weight:bold;font-size:10pt;" id="btn-upload-confirm" disabled>✅ Ekle</button><button onclick="closeModal()" style="padding:4px 12px;background:#f0e0d6;border:1px solid #d9bfb7;cursor:pointer;font-size:10pt;">İptal</button></div>
+    </div>
+    <div id="img-tab-url" style="display:none;">
+      <label>Resim URL'si:</label><input type="text" id="img-url" placeholder="https://…">
+      <div style="border:1px solid #d9bfb7;min-height:70px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;background:#fffef0;" id="img-url-preview"><span style="color:#888;font-style:italic;font-size:9pt;">URL gir → önizleme</span></div>
+      <div style="display:flex;gap:6px;"><button onclick="confirmImgUrl()" style="flex:1;padding:4px;background:#98e;border:1px solid #7799cc;cursor:pointer;font-weight:bold;">✅ Ekle</button><button onclick="closeModal()" style="padding:4px 12px;background:#f0e0d6;border:1px solid #d9bfb7;cursor:pointer;">İptal</button></div>
+    </div>
+    <div id="img-tab-sb" style="display:none;">
+      <div id="img-sb-list" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:220px;overflow-y:auto;"></div>
+      <div style="margin-top:8px;"><button onclick="closeModal()" style="padding:4px 12px;background:#f0e0d6;border:1px solid #d9bfb7;cursor:pointer;">İptal</button></div>
+    </div>`;
+  const urlInput=document.getElementById("img-url");const urlPreview=document.getElementById("img-url-preview");
+  urlInput.addEventListener("input",()=>{const u=urlInput.value.trim();if(!u){urlPreview.innerHTML=`<span style="color:#888;font-style:italic;font-size:9pt;">URL gir → önizleme</span>`;return;}urlPreview.innerHTML=`<img src="${escHtml(u)}" onerror="this.parentElement.innerHTML='<span style=\\'color:#d00;font-size:9pt;\\'>❌ Yüklenemedi</span>'" style="max-width:100%;max-height:140px;object-fit:contain;">`;});
+  urlInput.addEventListener("keydown",e=>{if(e.key==="Enter")confirmImgUrl();});
+  db.ref("images").once("value",snap=>{const el=document.getElementById("img-sb-list");if(!el)return;const data=snap.val();if(!data){el.innerHTML=`<div style="color:#a98;font-style:italic;font-size:9pt;grid-column:1/-1;">Katalogda görsel yok.</div>`;return;}const imgs=Object.entries(data).map(([k,v])=>({key:k,...v})).sort((a,b)=>b.addedAt-a.addedAt);el.innerHTML=imgs.map(img=>`<div style="cursor:pointer;border:2px solid transparent;overflow:hidden;" onclick="pickSidebarImg('${escHtml(img.key)}')" title="${escHtml(img.name)}"><img src="${escHtml(img.dataUrl)}" style="width:100%;aspect-ratio:1;object-fit:cover;display:block;border:1px solid #d9bfb7;"><div style="font-size:7pt;color:#800;padding:2px;background:#f5ece4;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${escHtml(img.name)}</div></div>`).join("");});
+  window._imgCb=cb;window._imgData=null;
+  document.getElementById("modal-overlay").style.display="flex";
+}
+function pickSidebarImg(key){db.ref("images/"+key).once("value",snap=>{if(!snap.exists())return;closeModal();if(window._imgCb){window._imgCb(snap.val().dataUrl);window._imgCb=null;}});}
+function switchImgTab(tab){["file","url","sb"].forEach(t=>{const div=document.getElementById("img-tab-"+t);const btn=document.getElementById("imgtab-"+t);if(!div||!btn)return;const on=t===tab;div.style.display=on?"block":"none";btn.style.background=on?"#98e":"#f0e0d6";btn.style.color=on?"#000":"#800";btn.style.borderColor=on?"#7799cc":"#d9bfb7";});}
+function handleDragOver(e){e.preventDefault();document.getElementById("upload-drop").classList.add("dragover");}
+function handleDragLeave(){document.getElementById("upload-drop").classList.remove("dragover");}
+function handleDragLeave2(){const el=document.getElementById("sb-upload-drop");if(el)el.classList.remove("dragover");}
+function handleDrop(e){e.preventDefault();document.getElementById("upload-drop").classList.remove("dragover");const file=e.dataTransfer.files[0];if(file&&file.type.startsWith("image/"))processImageFile(file);}
+function handleFileSelect(e){const file=e.target.files[0];if(file)processImageFile(file);}
+function processImageFile(file){const reader=new FileReader();reader.onload=function(ev){const dataUrl=ev.target.result;window._imgData=dataUrl;document.getElementById("upload-preview").classList.add("on");document.getElementById("upload-thumb-img").src=dataUrl;document.getElementById("upload-fname").textContent=file.name;document.getElementById("upload-fsize").textContent=fmtSize(file.size);const warn=document.getElementById("upload-warn");if(file.size>800*1024){warn.style.display="block";warn.textContent="⚠️ Büyük dosya";}else warn.style.display="none";const btn=document.getElementById("btn-upload-confirm");if(btn)btn.disabled=false;};reader.readAsDataURL(file);}
+function clearUpload(){window._imgData=null;document.getElementById("upload-preview").classList.remove("on");document.getElementById("img-file-input").value="";const btn=document.getElementById("btn-upload-confirm");if(btn)btn.disabled=true;}
+function confirmFileUpload(){if(!window._imgData){alert("Önce bir dosya seç.");return;}closeModal();if(window._imgCb){window._imgCb(window._imgData);window._imgCb=null;window._imgData=null;}}
+function confirmImgUrl(){const url=(document.getElementById("img-url").value||"").trim();if(!url){alert("Lütfen bir URL girin.");return;}closeModal();if(window._imgCb){window._imgCb(url);window._imgCb=null;}}
+
+function createBlock(type,left,top){
+  const block=document.createElement("div");block.className="e-block";block.dataset.type=type;block.id="block-"+(blockIdCounter++);block.style.left=left+"px";block.style.top=top+"px";
+  const inner=document.createElement("div");inner.className="e-block-inner";
+  if(type==="text"){inner.contentEditable=true;inner.spellcheck=true;inner.addEventListener("focus",()=>{activeInner=inner;});}
+  block.appendChild(inner);
+  ["nw","n","ne","e","se","s","sw","w"].forEach(d=>{const h=document.createElement("div");h.className=`rh rh-${d}`;block.appendChild(h);makeResizable(block,h,d);makeTouchResizable(block,h,d);});
+  const del=document.createElement("button");del.className="block-del";del.innerHTML="✕";
+  del.addEventListener("mousedown",e=>{e.stopPropagation();e.preventDefault();});
+  del.addEventListener("click",e=>{e.stopPropagation();if(selectedBlock===block){selectedBlock=null;activeInner=null;}block.remove();updateBlockCount();});
+  block.appendChild(del);
+  block.addEventListener("mousedown",e=>{
+    if(e.target.classList.contains("rh")||e.target.classList.contains("block-del")||e.target.classList.contains("tpl-edit-btn")||e.target.classList.contains("tpl-drag-handle")||e.target.closest(".tpl-edit-overlay"))return;
+    if(type==="text"&&block.classList.contains("selected")&&inner.contains(e.target))return;
+    selectBlock(block);const sx=e.clientX,sy=e.clientY,ol=parseInt(block.style.left)||0,ot=parseInt(block.style.top)||0;let dragging=false;e.preventDefault();
+    function onMove(mv){const dx=mv.clientX-sx,dy=mv.clientY-sy;if(!dragging&&(Math.abs(dx)>4||Math.abs(dy)>4)){dragging=true;block.style.opacity=".8";block.style.zIndex="99";}if(dragging){block.style.left=Math.max(0,ol+dx)+"px";block.style.top=Math.max(0,ot+dy)+"px";updateBlockCount();}}
+    function onUp(){document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp);block.style.opacity="";block.style.zIndex="";if(!dragging&&type==="text"){inner.focus();activeInner=inner;}dragging=false;}
+    document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp);
+  });
+  block.addEventListener("touchstart",e=>{
+    if(e.target.classList.contains("rh")||e.target.classList.contains("block-del")||e.target.classList.contains("tpl-edit-btn")||e.target.classList.contains("tpl-drag-handle"))return;
+    const alreadySelected=block.classList.contains("selected");selectBlock(block);if(!alreadySelected)return;
+    const t0=e.touches[0],sx=t0.clientX,sy=t0.clientY,ol=parseInt(block.style.left)||0,ot=parseInt(block.style.top)||0;let dragging=false;
+    function onMove(mv){const t=mv.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(!dragging&&(Math.abs(dx)>6||Math.abs(dy)>6)){dragging=true;block.style.opacity=".8";block.style.zIndex="99";}if(dragging){mv.preventDefault();block.style.left=Math.max(0,ol+dx)+"px";block.style.top=Math.max(0,ot+dy)+"px";updateBlockCount();}}
+    function onEnd(){block.removeEventListener("touchmove",onMove);block.removeEventListener("touchend",onEnd);block.style.opacity="";block.style.zIndex="";}
+    block.addEventListener("touchmove",onMove,{passive:false});block.addEventListener("touchend",onEnd);
+  },{passive:true});
+  return block;
+}
+function selectBlock(block){if(selectedBlock&&selectedBlock!==block)selectedBlock.classList.remove("selected");selectedBlock=block;block.classList.add("selected");}
+function deselectAll(){if(selectedBlock){selectedBlock.classList.remove("selected");selectedBlock=null;}}
+function makeResizable(block,handle,dir){handle.addEventListener("mousedown",e=>{e.preventDefault();e.stopPropagation();const sx=e.clientX,sy=e.clientY,sw=block.offsetWidth,sh=block.offsetHeight,sl=parseInt(block.style.left)||0,st=parseInt(block.style.top)||0;function onMove(mv){const dx=mv.clientX-sx,dy=mv.clientY-sy;let w=sw,h=sh,l=sl,t=st;if(dir.includes("e"))w=Math.max(60,sw+dx);if(dir.includes("s"))h=Math.max(24,sh+dy);if(dir.includes("w")){w=Math.max(60,sw-dx);l=sl+(sw-w);}if(dir.includes("n")){h=Math.max(24,sh-dy);t=st+(sh-h);}block.style.width=w+"px";block.style.height=h+"px";block.style.left=l+"px";block.style.top=t+"px";updateBlockCount();}function onUp(){document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp);}document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp);});}
+function makeTouchResizable(block,handle,dir){handle.addEventListener("touchstart",e=>{e.stopPropagation();e.preventDefault();const t0=e.touches[0],sx=t0.clientX,sy=t0.clientY,sw=block.offsetWidth,sh=block.offsetHeight,sl=parseInt(block.style.left)||0,st=parseInt(block.style.top)||0;function onMove(mv){mv.preventDefault();const t=mv.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;let w=sw,h=sh,l=sl,tt=st;if(dir.includes("e"))w=Math.max(60,sw+dx);if(dir.includes("s"))h=Math.max(24,sh+dy);if(dir.includes("w")){w=Math.max(60,sw-dx);l=sl+(sw-w);}if(dir.includes("n")){h=Math.max(24,sh-dy);tt=st+(sh-h);}block.style.width=w+"px";block.style.height=h+"px";block.style.left=l+"px";block.style.top=tt+"px";updateBlockCount();}function onEnd(){document.removeEventListener("touchmove",onMove);document.removeEventListener("touchend",onEnd);}document.addEventListener("touchmove",onMove,{passive:false});document.addEventListener("touchend",onEnd);},{passive:false});}
+function changeCanvasSize(){showInputModal("⤢ Tuval Boyutu",[{id:"cvw",label:"Genişlik (px):",placeholder:"900",type:"number"},{id:"cvh",label:"Yükseklik (px):",placeholder:"600",type:"number"}],vals=>{const inner=document.getElementById("editor-canvas-inner");if(inner){if(vals.cvw)inner.style.minWidth=(parseInt(vals.cvw)||900)+"px";if(vals.cvh)inner.style.minHeight=(parseInt(vals.cvh)||600)+"px";}});}
+function clearCanvas(){showConfirmModal("Tüm blokları sil?",()=>{document.getElementById("editor-canvas-inner").querySelectorAll(".e-block").forEach(b=>b.remove());selectedBlock=null;activeInner=null;updateBlockCount();});}
+
+/* ══ SAVE ══ */
+function saveArticle(){
+  if(isHomepageEditor){
+    if(!isAdmin()){alert("Sadece admin kaydedebilir.");return;}
+    const blocks=collectBlocks();
+    setStatus("Kaydediliyor…");
+    db.ref("homepage").set({blocks,updatedAt:Date.now()},err=>{if(err){alert("Hata: "+err.message);return;}setStatus("Ana sayfa kaydedildi ✅");goHome();});
+    return;
+  }
+  const titleEl=document.getElementById("ed-title");const locEl=document.getElementById("ed-location");const catEl=document.getElementById("ed-categories");
+  const title=(titleEl?titleEl.value:"").trim();const location=(locEl?locEl.value:"").trim();const catRaw=(catEl?catEl.value:"").trim();
+  const categories=catRaw?catRaw.split(",").map(c=>c.trim()).filter(Boolean):[];
+  if(!title){alert("Lütfen bir başlık girin.");if(titleEl)titleEl.focus();return;}
+  const blocks=collectBlocks();
+  const slug=editingSlug||slugify(title);
+  const payload={title,location,slug,blocks,categories,createdAt:Date.now(),updatedAt:Date.now(),author:currentUser?currentUser.username:"Anonim"};
+  setStatus("Kaydediliyor…");
+  if(canAutoApprove()){
+    db.ref("articles/"+slug).once("value",prev=>{if(prev.exists())saveRevision(slug,prev.val());});
+    db.ref("articles/"+slug).set(payload,err=>{
+      if(err){alert("Hata: "+err.message);setStatus("Hata!");return;}
+      autoCatalogPageImages(slug,blocks);
+      setStatus("Kaydedildi ✅");navigate("article/"+slug);
+    });
+  } else {
+    db.ref("pending/"+slug+"_"+Date.now()).set(payload,err=>{if(err){alert("Hata: "+err.message);setStatus("Hata!");return;}setStatus("Onaya gönderildi ✅");document.getElementById("main-content").innerHTML=`<div class="page-wrap"><div class="page-body"><div class="notice success">✅ İçeriğiniz admin onayına gönderildi!</div><button class="btn-post" onclick="goHome()" style="margin-top:10px">🏠 Ana Sayfaya Dön</button></div></div>`;});
+  }
+}
+function collectBlocks(){
+  const canvas=document.getElementById("editor-canvas-inner");const blocks=[];
+  canvas.querySelectorAll(".e-block").forEach(block=>{
+    const type=block.dataset.type,inner=block.querySelector(".e-block-inner");
+    if(type==="image"){const img=inner.querySelector("img");blocks.push({type,left:block.style.left,top:block.style.top,width:block.style.width||null,height:block.style.height||null,content:img?img.src:""});}
+    else if(type==="template"){blocks.push({type,left:block.style.left,top:block.style.top,width:block.style.width||null,height:block.style.height||null,content:block.dataset.tplTag||"",tplSlug:block.dataset.tplSlug||"",tplTag:block.dataset.tplTag||""});}
+    else{blocks.push({type,left:block.style.left,top:block.style.top,width:block.style.width||null,height:block.style.height||null,content:inner.innerHTML});}
+  });
+  return blocks;
+}
+
+/* ══ MODAL ══ */
+let modalCb=null;
+function closeModal(){document.getElementById("modal-overlay").style.display="none";document.getElementById("modal-footer").style.display="flex";modalCb=null;window._tplModalCb=null;}
+function closeModalOutside(e){if(e.target.id==="modal-overlay")closeModal();}
+function confirmModal(){if(window._tplModalCb){if(window._tplModalCb()!==false)closeModal();return;}if(typeof modalCb==="function"){const inputs=document.querySelectorAll("#modal-body input[data-id],#modal-body textarea[data-id]");if(inputs.length){const v={};inputs.forEach(i=>v[i.dataset.id]=i.value);modalCb(v);}else modalCb();}closeModal();}
+function showConfirmModal(msg,cb){modalCb=cb;document.getElementById("modal-title").textContent="Onayla";document.getElementById("modal-body").innerHTML=`<p>${escHtml(msg)}</p>`;document.getElementById("modal-ok").textContent="Evet";document.getElementById("modal-cancel").textContent="Hayır";document.getElementById("modal-footer").style.display="flex";document.getElementById("modal-overlay").style.display="flex";}
+function showInputModal(title,fields,cb){modalCb=cb;document.getElementById("modal-title").textContent=title;document.getElementById("modal-body").innerHTML=fields.map(f=>`<label>${escHtml(f.label)}</label><input type="${f.type||'text'}" data-id="${f.id}" placeholder="${escHtml(f.placeholder||'')}">`).join("");document.getElementById("modal-ok").textContent="Tamam";document.getElementById("modal-cancel").textContent="İptal";document.getElementById("modal-footer").style.display="flex";document.getElementById("modal-overlay").style.display="flex";setTimeout(()=>{const fi=document.querySelector("#modal-body input");if(fi)fi.focus();},50);}
+
+/* ══ SEARCH ══ */
+function doSearch(){const q=(document.getElementById("search-input").value||"").trim().toLowerCase();closeAC("search-ac");if(!q)return;_runSearch(q);}
+function doSidebarSearch(){const q=(document.getElementById("sb-search-input").value||"").trim().toLowerCase();closeAC("sb-search-ac");if(!q)return;closeSidebar();_runSearch(q);}
+function _runSearch(q){
+  setStatus("Aranıyor: "+q);
+  db.ref("articles").once("value",snap=>{
+    const data=snap.val();const el=document.getElementById("main-content");
+    if(!data){el.innerHTML=`<div class="page-wrap"><div class="page-body"><div class="notice warn">Sonuç bulunamadı.</div></div></div>`;return;}
+    const res=Object.values(data).filter(a=>a.title.toLowerCase().includes(q)||(a.blocks||[]).some(b=>b.type==="text"&&stripTags(b.content).toLowerCase().includes(q))||(a.categories||[]).some(c=>c.toLowerCase().includes(q)));
+    document.title=`"${q}" — Babane Pedia`;
+    el.innerHTML=`<div class="page-wrap"><div class="page-head"><div class="ph-tabs"><span class="ph-tab active">🔍 Arama</span></div></div><div class="page-body"><p class="art-title" style="font-size:12pt;">Arama: "${escHtml(q)}"</p><p style="font-size:9pt;color:#117743;margin-bottom:10px;">${res.length} sonuç</p>${res.length?res.map(a=>`<div class="acard"><div class="acard-title"><a onclick="navigate('article/${a.slug}')">${escHtml(a.title)}</a></div><div class="acard-meta">📍 ${escHtml(a.location||"—")} &bull; ${new Date(a.createdAt).toLocaleDateString("tr-TR")}${(a.categories&&a.categories.length)?` &bull; ${a.categories.map(c=>`<span class="cat-badge" onclick="navigate('category/${encodeURIComponent(c)}')">${escHtml(c)}</span>`).join("")}`:""}</div></div>`).join(""):'<div class="empty-state">Sonuç bulunamadı.</div>'}</div></div>`;
+    setStatus(res.length+" sonuç");
+  });
+}
+
+/* ══ KEYBOARD ══ */
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){closeModal();closeEmojiPicker();closeTplSheet();closeAC("search-ac");closeAC("sb-search-ac");}
+  if((e.ctrlKey||e.metaKey)&&e.key==="s"){e.preventDefault();if(document.getElementById("editor-canvas"))saveArticle();}
+});
+
+/* ══ LIVE STATS ══ */
+db.ref("articles").on("value",snap=>{const n=snap.val()?Object.keys(snap.val()).length:0;const el=document.getElementById("article-count");if(el)el.textContent=n+" sayfa";});
+db.ref("users").on("value",snap=>{const n=snap.val()?Object.keys(snap.val()).length:0;const el=document.getElementById("user-count");if(el)el.textContent=n+" kullanıcı";});
+
+/* ══ INIT ══ */
+loadSession();
+seedTemplates();
+renderSidebarImages();
+updateWatchlistSidebar();
+loadAnnouncement();
+initAcCache();
+preloadFirebaseImages().then(()=>router());
+</script>
 </body>
 </html>
